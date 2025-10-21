@@ -7,10 +7,10 @@
 }
 
 .toast {
-  background: var(--gradient-card);
-  color: var(--color-foreground);
-  border: var(--pixel-border-width) solid var(--color-border);
-  border-radius: var(--radius-sm);
+  background: var(--gradiente-tarjeta);
+  color: var(--color-texto);
+  border: var(--ancho-borde-pixel) solid var(--color-borde);
+  border-radius: var(--radio-pequeno);
   box-shadow: 4px 4px 0 hsl(312 32% 22% / 0.6);
   padding: 0.95rem 1.2rem;
   font-size: 0.92rem;

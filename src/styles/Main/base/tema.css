@@ -1,0 +1,47 @@
+:root {
+  color-scheme: dark;
+  --color-fondo: hsl(236 38% 8%);
+  --color-texto: hsl(45 100% 94%);
+  --color-tarjeta: hsl(234 32% 14%);
+  --color-texto-tarjeta: hsl(45 100% 94%);
+  --color-emergente: hsl(236 32% 12%);
+  --color-texto-emergente: hsl(45 100% 94%);
+  --color-primario: hsl(345 82% 60%);
+  --color-texto-primario: hsl(0 0% 98%);
+  --color-secundario: hsl(198 76% 56%);
+  --color-texto-secundario: hsl(198 100% 12%);
+  --color-suave: hsl(233 30% 22%);
+  --color-texto-suave: hsl(232 24% 80%);
+  --color-resaltado: hsl(160 72% 54%);
+  --color-texto-resaltado: hsl(160 100% 10%);
+  --color-peligro: hsl(2 76% 58%);
+  --color-texto-peligro: hsl(0 0% 98%);
+  --color-borde: hsl(236 42% 38%);
+  --color-campo: hsl(234 32% 18%);
+  --color-anillo: hsl(345 82% 60%);
+  --radio-base: 0.6rem;
+  --radio-pequeno: 0.45rem;
+  --radio-grande: 0.9rem;
+  --sombra-pixel-suave: 0 0 0 1px hsl(236 42% 38% / 0.45),
+    4px 4px 0 hsl(240 52% 12% / 0.75);
+  --sombra-pixel-fuerte: 0 0 0 1px hsl(236 42% 38% / 0.55),
+    6px 6px 0 hsl(240 58% 10% / 0.85), 0 18px 36px hsl(228 80% 8% / 0.45);
+  --sombra-pixel-resaltada: 0 0 0 1px hsl(345 82% 48% / 0.6),
+    6px 6px 0 hsl(278 72% 34% / 0.75);
+  --ancho-borde-pixel: 3px;
+  --gradiente-amanecer: linear-gradient(
+    135deg,
+    hsl(278 62% 32%),
+    hsl(345 82% 46%)
+  );
+  --gradiente-alba: linear-gradient(135deg, hsl(200 72% 36%), hsl(160 68% 32%));
+  --gradiente-tarjeta: linear-gradient(
+    135deg,
+    hsl(235 30% 18%),
+    hsl(230 36% 12%)
+  );
+  --fuente-base: "Work Sans", "Segoe UI", system-ui, -apple-system,
+    BlinkMacSystemFont, sans-serif;
+  --fuente-titulos: "Press Start 2P", "Work Sans", system-ui, sans-serif;
+  --transicion-base: 140ms cubic-bezier(0.4, 0, 0.2, 1);
+}
