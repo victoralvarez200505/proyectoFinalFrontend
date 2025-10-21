@@ -1,0 +1,18 @@
+.toaster {
+  --view-height: 100vh;
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 1100;
+}
+
+.toast {
+  background: var(--gradient-card);
+  color: var(--color-foreground);
+  border: var(--pixel-border-width) solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: 4px 4px 0 hsl(312 32% 22% / 0.6);
+  padding: 0.95rem 1.2rem;
+  font-size: 0.92rem;
+  letter-spacing: 0.03em;
+}
