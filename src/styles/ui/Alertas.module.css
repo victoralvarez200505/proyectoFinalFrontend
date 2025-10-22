@@ -1,0 +1,46 @@
+.alerta {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radio-base);
+  border: var(--ancho-borde-pixel) solid var(--color-borde);
+  padding: 1.35rem 1.6rem;
+  background: var(--color-emergente);
+  color: var(--color-texto-emergente);
+  box-shadow: var(--sombra-pixel-suave);
+}
+
+.alerta svg {
+  position: absolute;
+  left: 1.25rem;
+  top: 1.25rem;
+}
+
+.alerta > svg ~ * {
+  padding-left: 2.75rem;
+}
+
+.alerta[data-variant="peligro"] {
+  border-color: var(--color-peligro);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-peligro) 22%, transparent),
+    color-mix(in srgb, var(--color-peligro) 12%, var(--color-emergente))
+  );
+  color: var(--color-texto-peligro);
+  box-shadow: var(--sombra-pixel-resaltada);
+}
+
+.tituloAlerta {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.descripcionAlerta {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--color-texto-suave);
+}

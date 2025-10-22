@@ -1,9 +1,21 @@
 import styles from "@/styles/pages/Inicio.module.css";
+import { SeccionPrincipal } from "@/components/Inicio/SeccionPrincipal";
 
 const Inicio = () => {
   return (
     <>
-      <h1>Test del Inicio</h1>
+      <div className={styles.pagina}>
+        <SeccionPrincipal
+          juegosTotales={}
+          juegosCompletados={}
+          juegosPendientes={}
+          isLoading={}
+          error={}
+          juegos={}
+          onAddJuego={}
+          onSelectJuego={}
+        />
+      </div>
     </>
   );
 };
