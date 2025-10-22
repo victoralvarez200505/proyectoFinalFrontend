@@ -11,13 +11,13 @@ const PaginaNoEncontrada = () => {
   [location.pathname];
 
   return (
-    <div className={styles.page}>
-      <div className={styles.card}>
-        <h1 className={styles.title}>404</h1>
-        <p className={styles.message}>
+    <div className={styles.pagina}>
+      <div className={styles.tarjeta}>
+        <h1 className={styles.titulo}>404</h1>
+        <p className={styles.mensaje}>
           Ups, no encontramos la página que estabas buscando.
         </p>
-        <Link to="/" className={styles.link}>
+        <Link to="/" className={styles.enlace}>
           Volver al inicio
         </Link>
       </div>

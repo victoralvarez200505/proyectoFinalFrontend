@@ -1,0 +1,58 @@
+.pagina {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+      circle at top,
+      hsl(345 82% 60% / 0.12),
+      transparent 55%
+    ),
+    var(--color-fondo);
+  color: var(--color-texto);
+  padding: 2rem;
+}
+
+.tarjeta {
+  text-align: center;
+  background: var(--color-tarjeta);
+  border: 1px solid var(--color-borde);
+  border-radius: 1.75rem;
+  padding: clamp(2.5rem, 6vw, 4rem);
+  box-shadow: var(--sombra-pixel-fuerte);
+  backdrop-filter: blur(12px);
+  max-width: 520px;
+  width: 100%;
+}
+
+.titulo {
+  margin: 0 0 1rem 0;
+  font-size: clamp(3.5rem, 8vw, 5.75rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.mensaje {
+  margin: 0 0 2.5rem 0;
+  color: var(--color-texto-suave);
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+}
+
+.enlace {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  background: var(--gradiente-amanecer);
+  color: var(--color-texto-primario);
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform var(--transicion-base), opacity var(--transicion-base);
+}
+
+.enlace:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}

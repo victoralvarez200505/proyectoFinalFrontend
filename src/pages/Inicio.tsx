@@ -1,11 +1,11 @@
-const Inicio = () => {
+import styles from "@/styles/pages/Inicio.module.css";
 
+const Inicio = () => {
   return (
     <>
       <h1>Test del Inicio</h1>
     </>
-  )
-
-}
+  );
+};
 
 export default Inicio;
