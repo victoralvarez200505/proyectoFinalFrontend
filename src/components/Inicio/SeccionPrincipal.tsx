@@ -6,6 +6,7 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@/components/ui/general/alertas"; // Revisar Luego
+import { GameCarousel } from "@/components/ui/general/GameCarousel";
 import styles from "@/styles/pages/Inicio.module.css";
 
 interface SeccionPrincipalProps {
