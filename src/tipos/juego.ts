@@ -1,3 +1,19 @@
+export const GENEROS_BASE = [
+  "Acción",
+  "Aventura",
+  "Rol",
+  "Estrategia",
+  "Simulación",
+  "Deportes",
+  "Carreras",
+  "Plataformas",
+  "Puzzle",
+  "Metroidvania",
+  "Indie",
+] as const;
+
+export type Genero = string;
+
 export interface Juego {
   id: string;
   nombre: string;
