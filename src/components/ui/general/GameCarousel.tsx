@@ -24,13 +24,7 @@ export const GameCarousel = ({
 
   const hasGames = games.length > 0;
 
-  const orderedGames = useMemo(() => {
-    return [...games].sort((a, b) => {
-      const fechaA = a.fechaCreacion ? new Date(a.fechaCreacion).getTime() : 0;
-      const fechaB = b.fechaCreacion ? new Date(b.fechaCreacion).getTime() : 0;
-      return fechaB - fechaA;
-    });
-  }, [games]);
+  const orderedGames = useMemo(() => [...games], [games]);
 
   const scrollToIndex = useCallback(
     (index: number, behavior: ScrollBehavior = "smooth") => {

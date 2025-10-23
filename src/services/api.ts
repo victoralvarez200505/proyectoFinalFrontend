@@ -1,5 +1,5 @@
 import type { Juego } from "@/tipos/juego";
-import { apiConfig } from "@/config";
+import { apiConfig, bibliotecaConfig, integracionesConfig } from "@/config";
 
 const construirUrlApiPorDefecto = (): string => {
   if (typeof window === "undefined") {
@@ -43,6 +43,102 @@ const API_URL = (() => {
 
   return construirUrlApiPorDefecto();
 })();
+
+const RESENIAS_ENDPOINT = (() => {
+  const base = apiConfig.reseniasEndpoint || "/resenias";
+  return base.startsWith("/") ? base : `/${base}`;
+})();
+
+const shouldUseMock =
+  apiConfig.usarMock || integracionesConfig.featureFlags.habilitarModoOffline;
+
+let mockJuegos: Juego[] = [...bibliotecaConfig.juegos];
+
+const toHeaders = (value: HeadersInit | undefined): Headers => {
+  if (!value) {
+    return new Headers();
+  }
+
+  return new Headers(value);
+};
+
+const mergeHeaders = (incoming?: HeadersInit): Headers => {
+  const headers = toHeaders(incoming);
+
+  Object.entries(apiConfig.defaultHeaders).forEach(([clave, valor]) => {
+    headers.set(clave, valor);
+  });
+
+  if (apiConfig.authToken && apiConfig.authToken.trim() !== "") {
+    if (!headers.has("Authorization")) {
+      headers.set("Authorization", `Bearer ${apiConfig.authToken}`);
+    }
+  }
+
+  return headers;
+};
+
+const ejecutarFetch = async (
+  endpoint: string,
+  init: RequestInit = {},
+  fallback: string
+) => {
+  const intentosMaximos = Math.max(0, apiConfig.reintentos);
+  let ultimoError: unknown = null;
+
+  for (let intento = 0; intento <= intentosMaximos; intento++) {
+    const controller = new AbortController();
+
+    const timeoutId = apiConfig.timeoutMs
+      ? window.setTimeout(() => {
+          controller.abort();
+        }, apiConfig.timeoutMs)
+      : null;
+
+    try {
+      const response = await fetch(`${API_URL}${endpoint}`, {
+        ...init,
+        headers: mergeHeaders(init.headers),
+        signal: controller.signal,
+      });
+
+      if (timeoutId !== null) {
+        window.clearTimeout(timeoutId);
+      }
+
+      return response;
+    } catch (error) {
+      ultimoError = error;
+
+      if (timeoutId !== null) {
+        window.clearTimeout(timeoutId);
+      }
+
+      const esUltimoIntento = intento === intentosMaximos;
+      if (esUltimoIntento) {
+        if (error instanceof Error && error.name === "AbortError") {
+          throw new Error(
+            `La solicitud excedió el tiempo configurado (${apiConfig.timeoutMs}ms)`
+          );
+        }
+
+        throw error instanceof Error ? error : new Error(fallback);
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 150 * (intento + 1)));
+    }
+  }
+
+  throw ultimoError instanceof Error ? ultimoError : new Error(fallback);
+};
+
+const generarId = () => {
+  if (typeof crypto !== "undefined" && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+
+  return `mock-${Date.now()}-${Math.floor(Math.random() * 10_000)}`;
+};
 
 type JsonObject = Record<string, unknown>;
 
@@ -148,25 +244,60 @@ const normalizarListadoResenias = (payload: unknown): Resenia[] => {
   return [];
 };
 
+const obtenerMockJuegos = () => mockJuegos.map((juego) => ({ ...juego }));
+
+const normalizarEndpoint = (endpoint: string) =>
+  endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+
 // Juegos
 export const getJuegos = async (): Promise<Juego[]> => {
-  const response = await fetch(`${API_URL}/juegos`);
+  if (shouldUseMock) {
+    return obtenerMockJuegos();
+  }
+
+  const response = await ejecutarFetch(
+    "/juegos",
+    { method: "GET" },
+    "Error al obtener juegos"
+  );
   return parseResponse<Juego[]>(response, "Error al obtener juegos");
 };
 
 export const getJuego = async (id: string): Promise<Juego> => {
-  const response = await fetch(`${API_URL}/juegos/${id}`);
+  if (shouldUseMock) {
+    const juego = mockJuegos.find((item) => item.id === id);
+    if (!juego) {
+      throw new Error("Juego no encontrado en modo offline");
+    }
+    return { ...juego };
+  }
+
+  const response = await ejecutarFetch(
+    `/juegos/${id}`,
+    { method: "GET" },
+    "Error al obtener juego"
+  );
   return parseResponse<Juego>(response, "Error al obtener juego");
 };
 
 export const createJuego = async (juego: Omit<Juego, "id">): Promise<Juego> => {
-  const response = await fetch(`${API_URL}/juegos`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+  if (shouldUseMock) {
+    const nuevoJuego: Juego = { id: generarId(), ...juego };
+    mockJuegos = [...mockJuegos, nuevoJuego];
+    return { ...nuevoJuego };
+  }
+
+  const response = await ejecutarFetch(
+    "/juegos",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(juego),
     },
-    body: JSON.stringify(juego),
-  });
+    "Error al crear juego"
+  );
   return parseResponse<Juego>(response, "Error al crear juego");
 };
 
@@ -174,26 +305,69 @@ export const updateJuego = async (
   id: string,
   juego: Partial<Juego>
 ): Promise<Juego> => {
-  const response = await fetch(`${API_URL}/juegos/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
+  if (shouldUseMock) {
+    let juegoActualizado: Juego | undefined;
+
+    mockJuegos = mockJuegos.map((item) => {
+      if (item.id !== id) {
+        return item;
+      }
+      juegoActualizado = { ...item, ...juego } as Juego;
+      return juegoActualizado;
+    });
+
+    if (!juegoActualizado) {
+      throw new Error("Juego no encontrado en modo offline");
+    }
+
+    return { ...juegoActualizado };
+  }
+
+  const response = await ejecutarFetch(
+    `/juegos/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(juego),
     },
-    body: JSON.stringify(juego),
-  });
+    "Error al actualizar juego"
+  );
   return parseResponse<Juego>(response, "Error al actualizar juego");
 };
 
 export const deleteJuego = async (id: string): Promise<void> => {
-  const response = await fetch(`${API_URL}/juegos/${id}`, {
-    method: "DELETE",
-  });
+  if (shouldUseMock) {
+    const cantidadInicial = mockJuegos.length;
+    mockJuegos = mockJuegos.filter((juego) => juego.id !== id);
+
+    if (mockJuegos.length === cantidadInicial) {
+      throw new Error("Juego no encontrado en modo offline");
+    }
+
+    return;
+  }
+
+  const response = await ejecutarFetch(
+    `/juegos/${id}`,
+    { method: "DELETE" },
+    "Error al eliminar juego"
+  );
   await ensureSuccess(response, "Error al eliminar juego");
 };
 
 // Reseñas
 export const getResenias = async (): Promise<Resenia[]> => {
-  const response = await fetch(`${API_URL}/resenias`);
+  if (shouldUseMock) {
+    return [];
+  }
+
+  const response = await ejecutarFetch(
+    RESENIAS_ENDPOINT,
+    { method: "GET" },
+    "Error al obtener reseñas"
+  );
   const payload = await parseResponse<unknown>(
     response,
     "Error al obtener reseñas"
@@ -204,7 +378,15 @@ export const getResenias = async (): Promise<Resenia[]> => {
 export const getReseniasPorJuego = async (
   juegoId: string
 ): Promise<Resenia[]> => {
-  const response = await fetch(`${API_URL}/resenias/juego/${juegoId}`);
+  if (shouldUseMock) {
+    return [];
+  }
+
+  const response = await ejecutarFetch(
+    `${normalizarEndpoint(RESENIAS_ENDPOINT)}/juego/${juegoId}`,
+    { method: "GET" },
+    "Error al obtener reseñas del juego"
+  );
   const payload = await parseResponse<unknown>(
     response,
     "Error al obtener reseñas del juego"
@@ -215,13 +397,23 @@ export const getReseniasPorJuego = async (
 export const createResenia = async (
   resenia: ReseniaPayload
 ): Promise<Resenia> => {
-  const response = await fetch(`${API_URL}/resenias`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+  if (shouldUseMock) {
+    throw new Error(
+      "La creación de reseñas no está disponible en modo offline"
+    );
+  }
+
+  const response = await ejecutarFetch(
+    RESENIAS_ENDPOINT,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(resenia),
     },
-    body: JSON.stringify(resenia),
-  });
+    "Error al crear reseña"
+  );
   return parseResponse<Resenia>(response, "Error al crear reseña");
 };
 
@@ -229,19 +421,37 @@ export const updateResenia = async (
   id: string,
   resenia: Partial<ReseniaPayload>
 ): Promise<Resenia> => {
-  const response = await fetch(`${API_URL}/resenias/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
+  if (shouldUseMock) {
+    throw new Error(
+      "La actualización de reseñas no está disponible en modo offline"
+    );
+  }
+
+  const response = await ejecutarFetch(
+    `${normalizarEndpoint(RESENIAS_ENDPOINT)}/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(resenia),
     },
-    body: JSON.stringify(resenia),
-  });
+    "Error al actualizar reseña"
+  );
   return parseResponse<Resenia>(response, "Error al actualizar reseña");
 };
 
 export const deleteResenia = async (id: string): Promise<void> => {
-  const response = await fetch(`${API_URL}/resenias/${id}`, {
-    method: "DELETE",
-  });
+  if (shouldUseMock) {
+    throw new Error(
+      "La eliminación de reseñas no está disponible en modo offline"
+    );
+  }
+
+  const response = await ejecutarFetch(
+    `${normalizarEndpoint(RESENIAS_ENDPOINT)}/${id}`,
+    { method: "DELETE" },
+    "Error al eliminar reseña"
+  );
   await ensureSuccess(response, "Error al eliminar reseña");
 };

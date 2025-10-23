@@ -25,5 +25,7 @@ export interface Juego {
   desarrollador?: string;
   tienda?: string;
   completado?: boolean;
+  favorito?: boolean;
+  pendiente?: boolean;
   fechaCreacion?: string | null;
 }

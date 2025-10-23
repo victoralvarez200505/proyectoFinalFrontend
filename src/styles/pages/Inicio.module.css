@@ -152,6 +152,63 @@
   margin-right: 0.5rem;
 }
 
+.portadaBuscador {
+  width: min(420px, 90vw);
+  margin-top: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.portadaCampoBusqueda {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.iconoBusquedaPortada {
+  position: absolute;
+  left: 0.95rem;
+  color: hsl(232 24% 78%);
+}
+
+.entradaBusquedaPortada {
+  width: 100%;
+  padding: 0.75rem 2.75rem;
+  border-radius: var(--radio-base);
+  border: var(--ancho-borde-pixel) solid var(--color-borde);
+  background: var(--color-campo);
+  color: var(--color-texto);
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  box-shadow: 4px 4px 0 hsl(240 58% 8% / 0.45);
+  outline: none;
+  transition: border-color var(--transicion-base),
+    box-shadow var(--transicion-base);
+}
+
+.entradaBusquedaPortada:focus {
+  border-color: var(--color-primario);
+  box-shadow: 6px 6px 0 hsl(240 58% 8% / 0.55);
+}
+
+.botonLimpiarBusqueda {
+  position: absolute;
+  right: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: hsl(232 24% 78%);
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: color var(--transicion-base), transform var(--transicion-base);
+}
+
+.botonLimpiarBusqueda:hover {
+  color: var(--color-primario);
+  transform: scale(1.05);
+}
+
 .portadaMensajes {
   margin-top: 2rem;
   display: flex;
@@ -187,6 +244,84 @@
   width: 3rem;
   height: 3rem;
   color: var(--color-primario);
+}
+
+.portadaAvisoOffline {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radio-base);
+  border: var(--ancho-borde-pixel) solid hsl(45 92% 62% / 0.4);
+  background: linear-gradient(135deg, hsl(45 92% 62% / 0.15), transparent);
+  color: var(--color-texto);
+  font-size: 0.9rem;
+}
+
+.portadaAvisoLimite {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: min(520px, 90vw);
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--radio-base);
+  border: var(--ancho-borde-pixel) solid hsl(236 42% 38% / 0.35);
+  background: linear-gradient(
+    135deg,
+    hsl(236 32% 18% / 0.85),
+    hsl(236 36% 12% / 0.85)
+  );
+  color: var(--color-texto);
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+  box-shadow: 4px 4px 0 hsl(240 58% 8% / 0.5);
+  text-align: left;
+}
+
+.portadaAvisoLimite svg {
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.portadaAvisoLimite[data-variant="favoritos"] {
+  border-color: hsl(345 82% 60% / 0.45);
+  background: linear-gradient(
+    135deg,
+    hsl(345 82% 34% / 0.85),
+    hsl(278 62% 30% / 0.85)
+  );
+  color: hsl(45 100% 96%);
+}
+
+.portadaAvisoLimite[data-variant="pendientes"] {
+  border-color: hsl(45 92% 62% / 0.5);
+  background: linear-gradient(
+    135deg,
+    hsl(38 92% 44% / 0.9),
+    hsl(32 92% 36% / 0.9)
+  );
+  color: hsl(30 34% 12%);
+}
+
+.portadaAvisoLimite[data-variant="pendientes"] svg {
+  color: hsl(30 34% 12%);
+}
+
+.portadaMensajeEstado {
+  text-align: center;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  color: var(--color-texto-suave);
+}
+
+.portadaMensajeEstado h2 {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-size: 1.25rem;
+  color: var(--color-texto);
+  letter-spacing: 0.08em;
 }
 
 .portadaCarrusel {
@@ -338,6 +473,11 @@
     flex-direction: row;
     align-items: center;
   }
+
+  .paginacionControles {
+    flex-direction: row;
+    justify-content: center;
+  }
 }
 
 .contenedorBusqueda {
@@ -446,7 +586,276 @@
   display: grid;
   gap: 1.5rem;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  justify-items: center;
+  justify-items: stretch;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.panelMensajeLista {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+  max-width: min(420px, 90vw);
+}
+
+.resumenLista {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  color: var(--color-texto-suave);
+}
+
+.resumenLista strong {
+  color: var(--color-texto);
+}
+
+.elementoTarjetaJuego {
+  width: 100%;
+  display: flex;
+}
+
+.tarjetaJuego {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: var(--radio-base);
+  border: var(--ancho-borde-pixel) solid var(--color-borde);
+  background: var(--color-campo);
+  box-shadow: 4px 4px 0 hsl(240 58% 8% / 0.55);
+  overflow: hidden;
+  transition: transform var(--transicion-base),
+    box-shadow var(--transicion-base);
+}
+
+.tarjetaJuego:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 hsl(240 58% 8% / 0.65);
+}
+
+.marcoImagenJuego {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, hsl(236 32% 18%), hsl(236 36% 10%));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-bottom: var(--ancho-borde-pixel) solid var(--color-borde);
+}
+
+.imagenJuego {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.imagenJuegoFallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primario);
+  background: linear-gradient(135deg, hsl(240 58% 8% / 0.3), transparent);
+}
+
+.tarjetaJuegoContenido {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1.3rem 1.4rem;
+  height: 100%;
+}
+
+.tarjetaJuegoEncabezado {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tarjetaJuegoTitulo {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-size: 1.05rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-texto);
+  text-shadow: 2px 2px 0 hsl(240 58% 8% / 0.5);
+}
+
+.tarjetaJuegoEtiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.etiquetaJuego {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radio-pequeno);
+  border: var(--ancho-borde-pixel) solid hsl(236 42% 38% / 0.45);
+  background: linear-gradient(135deg, hsl(236 32% 18%), hsl(236 36% 12%));
+  color: var(--color-texto);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.etiquetaJuego[data-variant="completado"] {
+  background: linear-gradient(135deg, hsl(145 62% 34%), hsl(162 70% 42%));
+  border-color: hsl(151 72% 44% / 0.7);
+  color: hsl(45 100% 96%);
+}
+
+.etiquetaJuego[data-variant="pendiente"] {
+  background: linear-gradient(135deg, hsl(45 92% 62%), hsl(38 92% 56%));
+  border-color: hsl(43 94% 58% / 0.7);
+  color: hsl(30 34% 20%);
+}
+
+.etiquetaJuego[data-variant="favorito"] {
+  background: linear-gradient(135deg, hsl(345 82% 60%), hsl(278 62% 56%));
+  border-color: hsl(345 82% 60% / 0.7);
+  color: hsl(45 100% 96%);
+}
+
+.tarjetaJuegoMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--color-texto-suave);
+}
+
+.tarjetaJuegoMeta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: var(--radio-pequeno);
+  border: var(--ancho-borde-pixel) solid hsl(236 42% 38% / 0.35);
+  background: linear-gradient(
+    135deg,
+    hsl(236 32% 18% / 0.8),
+    hsl(236 32% 12% / 0.8)
+  );
+  color: var(--color-texto);
+}
+
+.tarjetaJuegoDetalle {
+  font-size: 0.85rem;
+  color: var(--color-texto-suave);
+  letter-spacing: 0.04em;
+}
+
+.tarjetaJuegoDetalle strong {
+  color: var(--color-texto);
+}
+
+.tarjetaJuegoSinopsis {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+  color: var(--color-texto);
+  line-clamp: 3;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tarjetaJuegoAcciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.tarjetaJuegoAcciones > * {
+  flex: 1 1 45%;
+}
+
+.botonAccionPrimario {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.paginacion {
+  margin-top: clamp(2rem, 5vw, 3rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.paginacionControles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.paginacionPaginas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.paginacionPagina {
+  min-width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radio-pequeno);
+  border: var(--ancho-borde-pixel) solid var(--color-borde);
+  background: var(--color-campo);
+  color: var(--color-texto);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 hsl(240 58% 8% / 0.55);
+  transition: transform var(--transicion-base),
+    box-shadow var(--transicion-base), border-color var(--transicion-base);
+}
+
+.paginacionPagina:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 hsl(240 58% 8% / 0.6);
+}
+
+.paginacionPagina[data-active="true"] {
+  background: linear-gradient(135deg, var(--color-primario), hsl(228 72% 62%));
+  border-color: hsl(228 72% 62%);
+  color: var(--color-texto-primario);
+  box-shadow: 5px 5px 0 hsl(240 58% 8% / 0.7);
+  transform: translate(-2px, -2px);
+}
+
+.paginacionPagina:focus-visible {
+  outline: none;
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px hsl(228 72% 62% / 0.4), 4px 4px 0 hsl(240 58% 8% / 0.7);
+}
+
+.paginacionPagina:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+  box-shadow: none;
 }
 
 @media (max-width: 720px) {
@@ -492,6 +901,10 @@
   }
 
   .portadaMensajes {
+    width: 100%;
+  }
+
+  .portadaAvisoLimite {
     width: 100%;
   }
 

@@ -7,8 +7,7 @@ const PaginaNoEncontrada = () => {
 
   useEffect(() => {
     console.error("Error 404: Esta página no existe:", location.pathname);
-  });
-  [location.pathname];
+  }, [location.pathname]);
 
   return (
     <div className={styles.pagina}>
