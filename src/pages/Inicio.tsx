@@ -1,20 +1,26 @@
 import styles from "@/styles/pages/Inicio.module.css";
 import { SeccionPrincipal } from "@/components/Inicio/SeccionPrincipal";
 import { ListaJuegos } from "@/components/Inicio/ListaJuegos";
+import { ResumenGeneros } from "@/components/Inicio/ResumenGeneros";
+import { GameForm } from "@/components/Inicio/GameForm";
 import { usePaginaInicio } from "@/hooks/usarPaginaInicio";
 import { apiConfig, integracionesConfig } from "@/config";
 
 const Inicio = () => {
   const {
+    juegosConfigurados,
     juegosPaginados,
     cargando,
     error,
+    genreCounts,
     totalCompletados,
     totalPendientes,
     abrirFormulario,
     editarJuego,
     eliminarJuegoConConfirmacion,
     gestionarResenias,
+    guardarJuego,
+    cambiarEstadoFormulario,
     terminoBusqueda,
     hayBusquedaActiva,
     placeholderBusqueda,
@@ -33,6 +39,8 @@ const Inicio = () => {
     limitePendientesAlcanzado,
     mensajeLimiteFavoritos,
     mensajeLimitePendientes,
+    isFormOpen,
+    editingGame,
   } = usePaginaInicio();
 
   const juegosTotales = totalDisponibles;
@@ -51,7 +59,7 @@ const Inicio = () => {
           juegosPendientes={totalPendientes}
           isLoading={cargando}
           error={error}
-          juegos={juegosPaginados}
+          juegos={juegosConfigurados}
           totalFiltrados={totalFiltrados}
           terminoBusqueda={terminoBusqueda}
           placeholderBusqueda={placeholderBusqueda}
@@ -67,6 +75,8 @@ const Inicio = () => {
           mensajeLimiteFavoritos={mensajeLimiteFavoritos}
           mensajeLimitePendientes={mensajeLimitePendientes}
         />
+
+        <ResumenGeneros generos={genreCounts} visible={!cargando && !error} />
 
         <ListaJuegos
           juegos={juegosPaginados}
@@ -92,6 +102,13 @@ const Inicio = () => {
           onClearBusqueda={limpiarBusqueda}
         />
       </div>
+
+      <GameForm
+        open={isFormOpen}
+        onOpenChange={cambiarEstadoFormulario}
+        onSave={guardarJuego}
+        editingGame={editingGame}
+      />
     </>
   );
 };

@@ -1,0 +1,157 @@
+.button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: var(--radio-base);
+  border: var(--ancho-borde-pixel) solid var(--color-borde);
+  padding: 0.625rem 1.35rem;
+  cursor: pointer;
+  background: var(--gradiente-amanecer);
+  color: var(--color-texto-primario);
+  box-shadow: var(--sombra-pixel-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: transform var(--transicion-base),
+    box-shadow var(--transicion-base), background-color var(--transicion-base),
+    color var(--transicion-base), filter var(--transicion-base);
+}
+
+.button::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: calc(var(--radio-base) - 0.25rem);
+  border: 1px solid hsl(0 0% 100% / 0.25);
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+}
+
+.button:focus-visible {
+  outline: 3px solid hsl(345 82% 60% / 0.55);
+  outline-offset: 2px;
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.button:hover:not(:disabled) {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--sombra-pixel-fuerte);
+}
+
+.button:active:not(:disabled) {
+  transform: translate(0, 0);
+  box-shadow: 2px 2px 0 hsl(240 58% 8%);
+}
+
+.button[data-variant="default"] {
+  background: var(--gradiente-amanecer);
+  color: var(--color-texto-primario);
+}
+
+.button[data-variant="secondary"] {
+  background: var(--gradiente-alba);
+  color: var(--color-texto-primario);
+  border-color: hsl(198 58% 42%);
+  box-shadow: 0 0 0 1px hsl(198 58% 42% / 0.25), 4px 4px 0 hsl(200 68% 24%);
+}
+
+.button[data-variant="outline"] {
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  border-color: var(--color-borde);
+  box-shadow: 3px 3px 0 hsl(240 58% 8% / 0.7);
+}
+
+.button[data-variant="outline"]:hover:not(:disabled) {
+  background: hsl(236 32% 16%);
+}
+
+.button[data-variant="destructive"] {
+  background: linear-gradient(135deg, hsl(2 76% 60%), hsl(2 72% 50%));
+  color: var(--color-texto-peligro);
+  border-color: hsl(2 60% 40%);
+  box-shadow: 0 0 0 1px hsl(2 60% 40% / 0.25), 4px 4px 0 hsl(2 72% 22%);
+}
+
+.button[data-variant="ghost"] {
+  background: transparent;
+  color: var(--color-texto);
+  border-color: var(--color-borde);
+  box-shadow: none;
+}
+
+.button[data-variant="ghost"]::after {
+  display: none;
+}
+
+.button[data-variant="ghost"]:hover:not(:disabled) {
+  background: hsl(236 32% 18% / 0.6);
+}
+
+.button[data-variant="retro"] {
+  background: linear-gradient(
+    135deg,
+    hsl(278 62% 36%),
+    hsl(345 82% 52%),
+    hsl(198 76% 44%)
+  );
+  color: var(--color-texto-secundario);
+  border: var(--ancho-borde-pixel) solid var(--color-borde);
+  box-shadow: var(--sombra-pixel-resaltada);
+  text-shadow: 2px 2px 0 hsl(240 58% 8% / 0.75);
+}
+
+.button[data-variant="retro"]::after {
+  inset: 6px;
+  border: 1px solid hsl(0 0% 100% / 0.55);
+}
+
+.button[data-variant="retro"]:hover:not(:disabled) {
+  filter: saturate(1.1);
+}
+
+.button[data-variant="link"] {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-primario);
+  letter-spacing: 0.04em;
+  text-decoration: underline;
+}
+
+.button[data-size="default"] {
+  height: 2.75rem;
+}
+
+.button[data-size="sm"] {
+  height: 2.4rem;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+.button[data-size="lg"] {
+  height: 3rem;
+  padding: 0.9rem 1.9rem;
+  font-size: 1rem;
+}
+
+.button[data-size="icon"] {
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+}
+
+.button svg {
+  flex-shrink: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+}
