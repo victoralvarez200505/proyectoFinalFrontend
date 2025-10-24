@@ -115,9 +115,11 @@
   color: var(--color-texto);
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  line-clamp: 2;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
   text-shadow: 2px 2px 0 hsl(240 58% 8% / 0.7);
 }
 
@@ -146,6 +148,10 @@
   ) !important;
   border-color: hsl(150 58% 30%) !important;
   color: hsl(152 100% 88%) !important;
+}
+
+.badgeCompleted svg {
+  margin-right: 0.32em;
   white-space: normal;
   text-align: center;
 }

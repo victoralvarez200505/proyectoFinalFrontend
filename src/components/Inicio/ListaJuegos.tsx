@@ -6,6 +6,8 @@ import {
   Plus,
   Search,
   XCircle,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { GameCard } from "@/components/Inicio/GameCard";
 import { Button } from "@/components/ui/general/boton";
@@ -268,27 +270,16 @@ export const ListaJuegos = ({
 
         {mostrarListado && paginas.length > 1 ? (
           <div className={styles.paginacion}>
-            <div className={styles.paginacionControles}>
-              <Button
+            <div className={styles.paginacionPaginas}>
+              <button
                 type="button"
-                size="sm"
-                variant="outline"
+                className={styles.paginacionFlecha}
                 onClick={onPaginaAnterior}
                 disabled={paginaActual <= 1}
+                aria-label="Página anterior"
               >
-                Página anterior
-              </Button>
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                onClick={onPaginaSiguiente}
-                disabled={paginaActual >= totalPaginas}
-              >
-                Página siguiente
-              </Button>
-            </div>
-            <div className={styles.paginacionPaginas}>
+                <ChevronLeft size={20} />
+              </button>
               {paginas.map((pagina) => (
                 <button
                   key={pagina}
@@ -300,6 +291,15 @@ export const ListaJuegos = ({
                   {pagina}
                 </button>
               ))}
+              <button
+                type="button"
+                className={styles.paginacionFlecha}
+                onClick={onPaginaSiguiente}
+                disabled={paginaActual >= totalPaginas}
+                aria-label="Página siguiente"
+              >
+                <ChevronRight size={20} />
+              </button>
             </div>
           </div>
         ) : null}

@@ -12,7 +12,7 @@ import {
   Tag,
 } from "lucide-react";
 import type { Juego } from "@/tipos/juego";
-import { Card } from "@/components/ui/general/card";
+import { CardBase } from "@/components/ui/general/CardBase";
 import { Button } from "@/components/ui/general/boton";
 import { Badge } from "@/components/ui/general/badge";
 import { cn } from "@/lib/utils";
@@ -111,126 +111,115 @@ export const GameCard = ({
   const tieneAcciones = Boolean(onManageReviews || onEdit || onDelete);
 
   return (
-    <Card className={styles.card}>
-      <div className={styles.media}>
-        <img
-          src={
-            juego.imagen ||
-            "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800"
-          }
-          alt={juego.nombre}
-          className={styles.image}
-          loading="lazy"
-          decoding="async"
-        />
-        <div className={styles.overlay} />
-      </div>
-
-      <div className={styles.body}>
-        <div className={styles.content}>
-          <div className={styles.titleSection}>
-            <h3 className={styles.title}>{juego.nombre}</h3>
-            {desarrollador !== "—" ? (
-              <p className={styles.subtitle}>{desarrollador}</p>
-            ) : null}
-          </div>
-
+    <CardBase
+      image={
+        juego.imagen ||
+        "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800"
+      }
+      title={juego.nombre}
+      subtitle={desarrollador !== "—" ? desarrollador : undefined}
+      badges={null}
+      className={styles.card}
+      bodyClassName={styles.body}
+    >
+      <div className={styles.content}>
+        <div className={styles.titleSection}>
+          {/* El título y subtítulo ya están en CardBase, pero mantenemos la estructura para el grid */}
+        </div>
+        <div className={styles.badgeRow}>
           {(juego.completado || genero !== "—") && (
-            <div className={styles.badgeRow}>
-              {juego.completado ? (
+            <>
+              {juego.completado && (
                 <Badge variant="outline" className={styles.badgeCompleted}>
                   <CheckCircle2 size={14} aria-hidden="true" /> Completado
                 </Badge>
-              ) : null}
-              {genero !== "—" ? (
+              )}
+              {genero !== "—" && (
                 <Badge variant="outline" className={styles.badgeGenre}>
                   {genero}
                 </Badge>
-              ) : null}
-            </div>
-          )}
-
-          <div className={styles.descriptionSection}>
-            <p
-              className={cn(
-                styles.description,
-                mostrarDescripcionCompleta && styles.descriptionExpanded
               )}
-              id={descripcionId}
-            >
-              {descripcion}
-            </p>
-            {descripcionTieneMasContenido ? (
-              <button
-                type="button"
-                className={styles.toggleDescription}
-                onClick={() => setMostrarDescripcionCompleta((prev) => !prev)}
-                aria-expanded={mostrarDescripcionCompleta ? "true" : "false"}
-                aria-controls={descripcionId}
-              >
-                {mostrarDescripcionCompleta ? "Ver menos" : "Ver más"}
-              </button>
-            ) : null}
-          </div>
-
-          <dl className={styles.infoList}>
-            {infoFiltrada.map(({ etiqueta, valor, icono: Icono }) => (
-              <div key={etiqueta} className={styles.infoItem}>
-                <dt className={styles.infoLabel}>{etiqueta}</dt>
-                <dd className={styles.infoValue}>
-                  <Icono
-                    size={14}
-                    className={styles.infoIcon}
-                    aria-hidden="true"
-                  />
-                  <span>{valor}</span>
-                </dd>
-              </div>
-            ))}
-          </dl>
+            </>
+          )}
         </div>
-
-        {tieneAcciones ? (
-          <div className={styles.footer}>
-            <div className={styles.divider} />
-            <div className={styles.actions}>
-              {onManageReviews ? (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onManageReviews(juego)}
-                  className={cn(styles.actionButton, styles.actionReviews)}
-                >
-                  <MessageSquareHeart size={16} aria-hidden="true" />
-                  Reseñas
-                </Button>
-              ) : null}
-              {onEdit ? (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onEdit(juego)}
-                  className={cn(styles.actionButton, styles.actionEdit)}
-                >
-                  <Pencil size={16} aria-hidden="true" />
-                  Editar
-                </Button>
-              ) : null}
-              {onDelete ? (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onDelete(juego.id)}
-                  className={cn(styles.actionButton, styles.actionDelete)}
-                >
-                  <Trash2 size={16} aria-hidden="true" />
-                  Eliminar
-                </Button>
-              ) : null}
+        <div className={styles.descriptionSection}>
+          <p
+            className={cn(
+              styles.description,
+              mostrarDescripcionCompleta && styles.descriptionExpanded
+            )}
+            id={descripcionId}
+          >
+            {descripcion}
+          </p>
+          {descripcionTieneMasContenido ? (
+            <button
+              type="button"
+              className={styles.toggleDescription}
+              onClick={() => setMostrarDescripcionCompleta((prev) => !prev)}
+              aria-expanded={mostrarDescripcionCompleta ? "true" : "false"}
+              aria-controls={descripcionId}
+            >
+              {mostrarDescripcionCompleta ? "Ver menos" : "Ver más"}
+            </button>
+          ) : null}
+        </div>
+        <dl className={styles.infoList}>
+          {infoFiltrada.map(({ etiqueta, valor, icono: Icono }) => (
+            <div key={etiqueta} className={styles.infoItem}>
+              <dt className={styles.infoLabel}>{etiqueta}</dt>
+              <dd className={styles.infoValue}>
+                <Icono
+                  size={14}
+                  className={styles.infoIcon}
+                  aria-hidden="true"
+                />
+                <span>{valor}</span>
+              </dd>
             </div>
-          </div>
-        ) : null}
+          ))}
+        </dl>
       </div>
-    </Card>
+      {tieneAcciones && (
+        <div className={styles.footer}>
+          <div className={styles.divider} />
+          <div className={styles.actions}>
+            {onManageReviews && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onManageReviews(juego)}
+                className={cn(styles.actionButton, styles.actionReviews)}
+              >
+                <MessageSquareHeart size={16} aria-hidden="true" />
+                Reseñas
+              </Button>
+            )}
+            {onEdit && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onEdit(juego)}
+                className={cn(styles.actionButton, styles.actionEdit)}
+              >
+                <Pencil size={16} aria-hidden="true" />
+                Editar
+              </Button>
+            )}
+            {onDelete && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onDelete(juego.id)}
+                className={cn(styles.actionButton, styles.actionDelete)}
+              >
+                <Trash2 size={16} aria-hidden="true" />
+                Eliminar
+              </Button>
+            )}
+          </div>
+        </div>
+      )}
+    </CardBase>
   );
 };

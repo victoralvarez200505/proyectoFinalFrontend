@@ -1,0 +1,82 @@
+/* Espaciado para el icono en badges de completado reutilizados */
+.badgeCompleted svg {
+  margin-right: 0.32em;
+}
+/* Estilos base para CardBase reutilizable. Puedes personalizar aquí la apariencia global de todas las tarjetas. */
+.card-base {
+  border-radius: var(--radius-base, 1rem);
+  background: var(--color-tarjeta, #23243a);
+  box-shadow: var(--shadow-pixel-soft, 0 2px 8px rgba(0, 0, 0, 0.12));
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+
+.card-base__media img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  display: block;
+}
+
+.card-base__body {
+  padding: 1.2rem 1.2rem 1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.card-base__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.card-base__title {
+  font-family: var(--fuente-titulos, inherit);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-texto, #fff);
+  margin: 0;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.card-base__subtitle {
+  font-size: 0.92rem;
+  color: var(--color-texto-suave, #b0b0b0);
+  margin: 0;
+}
+
+.card-base__badges {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: 0.2rem;
+}
+
+.card-base__description {
+  font-size: 0.98rem;
+  color: var(--color-texto);
+  margin: 0.2rem 0 0.2rem 0;
+}
+
+.card-base__info {
+  margin-top: 0.2rem;
+}
+
+.card-base__actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}

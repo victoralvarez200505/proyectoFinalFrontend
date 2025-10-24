@@ -17,6 +17,7 @@ import {
 } from "@/services/api";
 import { Button } from "@/components/ui/general/boton";
 import { Badge } from "@/components/ui/general/badge";
+import { GameCard } from "@/components/Inicio/GameCard";
 import { Input } from "@/components/ui/general/input";
 import { Select } from "@/components/ui/general/select";
 import { Switch } from "@/components/ui/general/switch";
@@ -263,36 +264,6 @@ const Resenias = () => {
     const promedio =
       horas.reduce((total, valor) => total + valor, 0) / horas.length;
     return Math.round(promedio);
-  }, [resenias]);
-
-  const porcentajeRecomendacion = useMemo(() => {
-    if (resenias.length === 0) {
-      return null;
-    }
-
-    const total = resenias.length;
-    const recomendadas = resenias.filter(
-      (resenia) => resenia.recomendaria
-    ).length;
-    return Math.round((recomendadas / total) * 100);
-  }, [resenias]);
-
-  const ultimaActualizacion = useMemo(() => {
-    const fechas = resenias
-      .map((resenia) => resenia.fechaActualizacion ?? resenia.fechaCreacion)
-      .filter((fecha): fecha is string => Boolean(fecha));
-
-    if (fechas.length === 0) {
-      return null;
-    }
-
-    const masReciente = fechas.reduce((maxima, actual) => {
-      return new Date(actual).getTime() > new Date(maxima).getTime()
-        ? actual
-        : maxima;
-    });
-
-    return formatoFecha(masReciente);
   }, [resenias]);
 
   const abrirFormulario = (resenia?: Resenia | null) => {
@@ -671,137 +642,7 @@ const Resenias = () => {
             </section>
 
             <aside className={styles.barraLateral}>
-              <div className={styles.tarjetaBarraLateral}>
-                <div className={styles.superposicionBarraLateral}>
-                  <div className={styles.bordeSuperposicionBarraLateral} />
-                </div>
-                <div className={styles.contenidoBarraLateral}>
-                  <figure className={styles.figuraJuego}>
-                    <img
-                      src={
-                        juegoActual.imagen ||
-                        "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800"
-                      }
-                      alt={juegoActual.nombre}
-                      className={styles.imagenJuego}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </figure>
-
-                  <div>
-                    <h2 className={styles.tituloBarraLateral}>
-                      Información del juego
-                    </h2>
-                    <div className={styles.etiquetasJuego}>
-                      <Badge className={styles.insigniaJuego} variant="outline">
-                        {juegoActual.genero}
-                      </Badge>
-                      <Badge className={styles.insigniaJuego} variant="outline">
-                        {juegoActual.plataforma}
-                      </Badge>
-                      <Badge
-                        className={cn(
-                          styles.insigniaJuego,
-                          juegoActual.completado
-                            ? styles.insigniaJuegoPositiva
-                            : styles.insigniaJuegoAdvertencia
-                        )}
-                        variant="outline"
-                      >
-                        {juegoActual.completado ? "Completado" : "En progreso"}
-                      </Badge>
-                    </div>
-                  </div>
-
-                  <div className={styles.tarjetaSinopsis}>
-                    <p className={styles.etiquetaSinopsis}>Sinopsis</p>
-                    <p className={styles.textoSinopsis}>
-                      {juegoActual.sinopsis &&
-                      juegoActual.sinopsis.trim() !== ""
-                        ? juegoActual.sinopsis
-                        : "Sinopsis no disponible."}
-                    </p>
-                  </div>
-
-                  <div className={styles.rejillaResumenInformacion}>
-                    <div className={styles.elementoResumenInformacion}>
-                      <p className={styles.etiquetaResumenInformacion}>
-                        Lanzamiento
-                      </p>
-                      <p className={styles.valorResumenInformacion}>
-                        {juegoActual.año ?? "—"}
-                      </p>
-                    </div>
-                    <div className={styles.elementoResumenInformacion}>
-                      <p className={styles.etiquetaResumenInformacion}>
-                        Desarrollador
-                      </p>
-                      <p className={styles.valorResumenInformacion}>
-                        {juegoActual.desarrollador &&
-                        juegoActual.desarrollador.trim() !== ""
-                          ? juegoActual.desarrollador
-                          : "—"}
-                      </p>
-                    </div>
-                    <div className={styles.elementoResumenInformacion}>
-                      <p className={styles.etiquetaResumenInformacion}>
-                        Creada
-                      </p>
-                      <p className={styles.valorResumenInformacion}>
-                        {formatoFecha(juegoActual.fechaCreacion)}
-                      </p>
-                    </div>
-                    <div className={styles.elementoResumenInformacion}>
-                      <p className={styles.etiquetaResumenInformacion}>
-                        Reseñas totales
-                      </p>
-                      <p className={styles.valorResumenInformacion}>
-                        {resenias.length}
-                      </p>
-                    </div>
-                    <div className={styles.elementoResumenInformacion}>
-                      <p className={styles.etiquetaResumenInformacion}>
-                        Promedio
-                      </p>
-                      <p className={styles.valorResumenInformacion}>
-                        {promedioPuntuacion ?? "—"}
-                      </p>
-                    </div>
-                    <div className={styles.elementoResumenInformacion}>
-                      <p className={styles.etiquetaResumenInformacion}>
-                        Recomiendan
-                      </p>
-                      <p className={styles.valorResumenInformacion}>
-                        {porcentajeRecomendacion !== null
-                          ? `${porcentajeRecomendacion}%`
-                          : "—"}
-                      </p>
-                    </div>
-                    <div className={styles.elementoResumenInformacion}>
-                      <p className={styles.etiquetaResumenInformacion}>
-                        Horas medias
-                      </p>
-                      <p className={styles.valorResumenInformacion}>
-                        {horasPromedio !== null ? `${horasPromedio}h` : "—"}
-                      </p>
-                    </div>
-                    <div className={styles.elementoResumenInformacion}>
-                      <p className={styles.etiquetaResumenInformacion}>
-                        Última reseña
-                      </p>
-                      <p className={styles.valorResumenInformacion}>
-                        {ultimaActualizacion ?? "—"}
-                      </p>
-                    </div>
-                  </div>
-
-                  <p className={styles.notaBarraLateral}>
-                    Toda la información se actualiza automáticamente cada vez
-                    que agregas, editas o eliminas una reseña.
-                  </p>
-                </div>
-              </div>
+              {juegoActual && <GameCard juego={juegoActual} />}
             </aside>
           </div>
         )}
