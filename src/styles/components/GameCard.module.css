@@ -134,6 +134,10 @@
   gap: 0.45rem;
 }
 
+.badgeRow > * {
+  max-width: 100%;
+}
+
 .badgeCompleted {
   background: linear-gradient(
     135deg,
@@ -142,6 +146,8 @@
   ) !important;
   border-color: hsl(150 58% 30%) !important;
   color: hsl(152 100% 88%) !important;
+  white-space: normal;
+  text-align: center;
 }
 
 .badgeGenre {
@@ -152,6 +158,8 @@
   ) !important;
   border-color: hsl(198 52% 32%) !important;
   color: hsl(196 100% 90%) !important;
+  white-space: normal;
+  text-align: center;
 }
 
 .descriptionSection {

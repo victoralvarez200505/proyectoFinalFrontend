@@ -24,9 +24,9 @@ const formateadorFecha = new Intl.DateTimeFormat("es-ES", {
 
 interface GameCardProps {
   juego: Juego;
-  onEdit: (juego: Juego) => void;
-  onDelete: (id: string) => void;
-  onManageReviews: (juego: Juego) => void;
+  onEdit?: (juego: Juego) => void;
+  onDelete?: (id: string) => void;
+  onManageReviews?: (juego: Juego) => void;
 }
 
 export const GameCard = ({
@@ -107,6 +107,8 @@ export const GameCard = ({
   ];
 
   const infoFiltrada = infoBase.filter((item) => item.valor !== "—");
+  const descripcionId = `descripcion-${juego.id}`;
+  const tieneAcciones = Boolean(onManageReviews || onEdit || onDelete);
 
   return (
     <Card className={styles.card}>
@@ -118,6 +120,8 @@ export const GameCard = ({
           }
           alt={juego.nombre}
           className={styles.image}
+          loading="lazy"
+          decoding="async"
         />
         <div className={styles.overlay} />
       </div>
@@ -135,7 +139,7 @@ export const GameCard = ({
             <div className={styles.badgeRow}>
               {juego.completado ? (
                 <Badge variant="outline" className={styles.badgeCompleted}>
-                  <CheckCircle2 size={14} /> Completado
+                  <CheckCircle2 size={14} aria-hidden="true" /> Completado
                 </Badge>
               ) : null}
               {genero !== "—" ? (
@@ -152,6 +156,7 @@ export const GameCard = ({
                 styles.description,
                 mostrarDescripcionCompleta && styles.descriptionExpanded
               )}
+              id={descripcionId}
             >
               {descripcion}
             </p>
@@ -160,6 +165,8 @@ export const GameCard = ({
                 type="button"
                 className={styles.toggleDescription}
                 onClick={() => setMostrarDescripcionCompleta((prev) => !prev)}
+                aria-expanded={mostrarDescripcionCompleta ? "true" : "false"}
+                aria-controls={descripcionId}
               >
                 {mostrarDescripcionCompleta ? "Ver menos" : "Ver más"}
               </button>
@@ -171,7 +178,11 @@ export const GameCard = ({
               <div key={etiqueta} className={styles.infoItem}>
                 <dt className={styles.infoLabel}>{etiqueta}</dt>
                 <dd className={styles.infoValue}>
-                  <Icono size={14} className={styles.infoIcon} />
+                  <Icono
+                    size={14}
+                    className={styles.infoIcon}
+                    aria-hidden="true"
+                  />
                   <span>{valor}</span>
                 </dd>
               </div>
@@ -179,38 +190,46 @@ export const GameCard = ({
           </dl>
         </div>
 
-        <div className={styles.footer}>
-          <div className={styles.divider} />
-          <div className={styles.actions}>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onManageReviews(juego)}
-              className={cn(styles.actionButton, styles.actionReviews)}
-            >
-              <MessageSquareHeart size={16} />
-              Reseñas
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onEdit(juego)}
-              className={cn(styles.actionButton, styles.actionEdit)}
-            >
-              <Pencil size={16} />
-              Editar
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onDelete(juego.id)}
-              className={cn(styles.actionButton, styles.actionDelete)}
-            >
-              <Trash2 size={16} />
-              Eliminar
-            </Button>
+        {tieneAcciones ? (
+          <div className={styles.footer}>
+            <div className={styles.divider} />
+            <div className={styles.actions}>
+              {onManageReviews ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onManageReviews(juego)}
+                  className={cn(styles.actionButton, styles.actionReviews)}
+                >
+                  <MessageSquareHeart size={16} aria-hidden="true" />
+                  Reseñas
+                </Button>
+              ) : null}
+              {onEdit ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onEdit(juego)}
+                  className={cn(styles.actionButton, styles.actionEdit)}
+                >
+                  <Pencil size={16} aria-hidden="true" />
+                  Editar
+                </Button>
+              ) : null}
+              {onDelete ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onDelete(juego.id)}
+                  className={cn(styles.actionButton, styles.actionDelete)}
+                >
+                  <Trash2 size={16} aria-hidden="true" />
+                  Eliminar
+                </Button>
+              ) : null}
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
     </Card>
   );
