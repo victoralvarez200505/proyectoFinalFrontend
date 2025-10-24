@@ -276,7 +276,8 @@ const Resenias = () => {
       return null;
     }
 
-    const promedio = horas.reduce((total, valor) => total + valor, 0) / horas.length;
+    const promedio =
+      horas.reduce((total, valor) => total + valor, 0) / horas.length;
     return Math.round(promedio);
   }, [resenias]);
 
@@ -286,7 +287,9 @@ const Resenias = () => {
     }
 
     const total = resenias.length;
-    const recomendadas = resenias.filter((resenia) => resenia.recomendaria).length;
+    const recomendadas = resenias.filter(
+      (resenia) => resenia.recomendaria
+    ).length;
     return Math.round((recomendadas / total) * 100);
   }, [resenias]);
 
@@ -490,7 +493,10 @@ const Resenias = () => {
                           size="icon"
                           className={styles.breadcrumbButton}
                         >
-                          <ArrowLeft className={styles.breadcrumbIcon} aria-hidden="true" />
+                          <ArrowLeft
+                            className={styles.breadcrumbIcon}
+                            aria-hidden="true"
+                          />
                         </Button>
                       </Link>
                       <span>Reseñas</span>
@@ -554,7 +560,9 @@ const Resenias = () => {
                   </div>
 
                   <p className={styles.highlightText}>
-                    {cargandoResenias ? "Cargando reseñas..." : resumenReseniaDestacada}
+                    {cargandoResenias
+                      ? "Cargando reseñas..."
+                      : resumenReseniaDestacada}
                   </p>
 
                   {reseniaDestacada && (
@@ -632,10 +640,16 @@ const Resenias = () => {
 
                   <div className={styles.filterRow}>
                     <div className={styles.searchWrapper}>
-                      <Search className={styles.searchIcon} size={16} aria-hidden="true" />
+                      <Search
+                        className={styles.searchIcon}
+                        size={16}
+                        aria-hidden="true"
+                      />
                       <Input
                         value={terminoBusqueda}
-                        onChange={(evento) => setTerminoBusqueda(evento.target.value)}
+                        onChange={(evento) =>
+                          setTerminoBusqueda(evento.target.value)
+                        }
                         placeholder="Buscar por comentario, dificultad, horas..."
                         className={styles.searchInput}
                         aria-label="Buscar reseñas"
@@ -655,7 +669,9 @@ const Resenias = () => {
                   </div>
 
                   {cargandoResenias ? (
-                    <div className={styles.sectionMessage}>Cargando reseñas...</div>
+                    <div className={styles.sectionMessage}>
+                      Cargando reseñas...
+                    </div>
                   ) : reseniasFiltradas.length === 0 ? (
                     <div className={styles.placeholderBox}>
                       {hayBusquedaActiva
@@ -668,7 +684,10 @@ const Resenias = () => {
                         const comentario = resenia.texto?.trim();
 
                         return (
-                          <article key={resenia.id} className={styles.reviewCard}>
+                          <article
+                            key={resenia.id}
+                            className={styles.reviewCard}
+                          >
                             <div className={styles.reviewHeader}>
                               <div className={styles.reviewMeta}>
                                 <div className={styles.reviewStars}>
@@ -687,11 +706,14 @@ const Resenias = () => {
                                     />
                                   ))}
                                 </div>
-                                <span className={styles.reviewIndex}>#{indice + 1}</span>
+                                <span className={styles.reviewIndex}>
+                                  #{indice + 1}
+                                </span>
                               </div>
                               <div className={styles.reviewDate}>
                                 {formatoFecha(
-                                  resenia.fechaActualizacion ?? resenia.fechaCreacion
+                                  resenia.fechaActualizacion ??
+                                    resenia.fechaCreacion
                                 )}
                               </div>
                             </div>
@@ -721,7 +743,9 @@ const Resenias = () => {
                                 )}
                                 variant="outline"
                               >
-                                {resenia.recomendaria ? "Recomendado" : "No recomendado"}
+                                {resenia.recomendaria
+                                  ? "Recomendado"
+                                  : "No recomendado"}
                               </Badge>
                             </div>
 
@@ -774,7 +798,9 @@ const Resenias = () => {
                   </figure>
 
                   <div>
-                    <h2 className={styles.sidebarTitle}>Información del juego</h2>
+                    <h2 className={styles.sidebarTitle}>
+                      Información del juego
+                    </h2>
                     <div className={styles.gameTags}>
                       <Badge className={styles.gameBadge} variant="outline">
                         {juegoActual.genero}
@@ -799,7 +825,8 @@ const Resenias = () => {
                   <div className={styles.synopsisCard}>
                     <p className={styles.synopsisLabel}>Sinopsis</p>
                     <p className={styles.synopsisText}>
-                      {juegoActual.sinopsis && juegoActual.sinopsis.trim() !== ""
+                      {juegoActual.sinopsis &&
+                      juegoActual.sinopsis.trim() !== ""
                         ? juegoActual.sinopsis
                         : "Sinopsis no disponible."}
                     </p>
@@ -829,7 +856,9 @@ const Resenias = () => {
                     </div>
                     <div className={styles.infoSummaryItem}>
                       <p className={styles.infoSummaryLabel}>Reseñas totales</p>
-                      <p className={styles.infoSummaryValue}>{resenias.length}</p>
+                      <p className={styles.infoSummaryValue}>
+                        {resenias.length}
+                      </p>
                     </div>
                     <div className={styles.infoSummaryItem}>
                       <p className={styles.infoSummaryLabel}>Promedio</p>
@@ -891,7 +920,9 @@ const Resenias = () => {
                     <button
                       key={valor}
                       type="button"
-                      onClick={() => manejarCambioFormulario("puntuacion", valor)}
+                      onClick={() =>
+                        manejarCambioFormulario("puntuacion", valor)
+                      }
                       className={cn(
                         styles.dialogStarButton,
                         formData.puntuacion !== null &&
@@ -994,7 +1025,11 @@ const Resenias = () => {
               >
                 {guardando ? (
                   <span className={styles.dialogSaving}>
-                    <Loader2 className={styles.dialogSpinner} aria-hidden="true" /> Guardando...
+                    <Loader2
+                      className={styles.dialogSpinner}
+                      aria-hidden="true"
+                    />{" "}
+                    Guardando...
                   </span>
                 ) : (
                   "Guardar reseña"
