@@ -4,6 +4,7 @@ import { useGameStore } from "@/hooks/useGameStore.ts";
 import { GENEROS } from "@/lib/generos";
 import type { Juego } from "@/tipos/juego";
 import { bibliotecaConfig, uiConfig } from "@/config";
+import { reemplazarVariables } from "@/lib/utils";
 
 interface JuegoConOpcionalId extends Omit<Juego, "id"> {
   id?: string;
@@ -93,16 +94,6 @@ const estaPendiente = (juego: Juego): boolean => {
   }
 
   return true;
-};
-
-const reemplazarVariables = (
-  plantilla: string,
-  valores: Record<string, string | number>
-) => {
-  return Object.entries(valores).reduce((acumulador, [clave, valor]) => {
-    const expresion = new RegExp(`\\{${clave}\\}`, "g");
-    return acumulador.replace(expresion, String(valor));
-  }, plantilla);
 };
 
 export const usePaginaInicio = () => {

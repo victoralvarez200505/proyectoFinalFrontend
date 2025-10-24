@@ -3,6 +3,7 @@ import type { Juego } from "@/tipos/juego";
 import { toast } from "sonner";
 import * as api from "@/services/api";
 import { bibliotecaConfig, uiConfig } from "@/config";
+import { reemplazarVariables } from "@/lib/utils";
 
 type TipoToast = "success" | "error" | "warning";
 
@@ -28,16 +29,6 @@ const mostrarToast = (tipo: TipoToast, mensaje: string) => {
       toast.error(mensaje);
       break;
   }
-};
-
-const reemplazarVariables = (
-  plantilla: string,
-  valores: Record<string, string | number>
-) => {
-  return Object.entries(valores).reduce((acumulador, [clave, valor]) => {
-    const expresion = new RegExp(`\\{${clave}\\}`, "g");
-    return acumulador.replace(expresion, String(valor));
-  }, plantilla);
 };
 
 const obtenerMensajeLimite = (

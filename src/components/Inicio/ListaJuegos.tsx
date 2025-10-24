@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/general/alertas";
 import styles from "@/styles/pages/Inicio.module.css";
 import { apiConfig, uiConfig } from "@/config";
-import { cn } from "@/lib/utils";
+import { cn, reemplazarVariables } from "@/lib/utils";
 
 interface ListaJuegosProps {
   juegos: Juego[];
@@ -48,16 +48,6 @@ interface ListaJuegosProps {
   onSearchChange: (valor: string) => void;
   onClearBusqueda: () => void;
 }
-
-const reemplazarVariables = (
-  plantilla: string,
-  valores: Record<string, string | number>
-) => {
-  return Object.entries(valores).reduce((acumulador, [clave, valor]) => {
-    const expresion = new RegExp(`\\{${clave}\\}`, "g");
-    return acumulador.replace(expresion, String(valor));
-  }, plantilla);
-};
 
 const crearRangoPaginado = (totalPaginas: number): number[] => {
   return Array.from({ length: totalPaginas }, (_, indice) => indice + 1);

@@ -20,6 +20,7 @@ import {
 import { GameCarousel } from "@/components/ui/general/GameCarousel";
 import styles from "@/styles/pages/Inicio.module.css";
 import { apiConfig, uiConfig } from "@/config";
+import { reemplazarVariables } from "@/lib/utils";
 
 interface SeccionPrincipalProps {
   juegosTotales: number;
@@ -43,16 +44,6 @@ interface SeccionPrincipalProps {
   mensajeLimiteFavoritos: string;
   mensajeLimitePendientes: string;
 }
-
-const reemplazarVariables = (
-  plantilla: string,
-  valores: Record<string, string | number>
-) => {
-  return Object.entries(valores).reduce((acumulador, [clave, valor]) => {
-    const expresion = new RegExp(`\\{${clave}\\}`, "g");
-    return acumulador.replace(expresion, String(valor));
-  }, plantilla);
-};
 
 export const SeccionPrincipal = ({
   juegosTotales,
