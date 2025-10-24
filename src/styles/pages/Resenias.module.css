@@ -1,5 +1,11 @@
+/* Asegura que las estrellas de reseñas se muestren en fila */
+.estrellasResenia {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
 /* Estilos de la página de reseñas con estética pixel-art */
-.page {
+.pagina {
   --color-background: var(--color-fondo);
   --color-foreground: var(--color-texto);
   --color-card: var(--color-tarjeta);
@@ -49,8 +55,8 @@
   gap: clamp(1.75rem, 5vw, 2.75rem);
 }
 
-.errorBanner,
-.errorCard {
+.bannerError,
+.tarjetaError {
   border: var(--pixel-border-width) solid hsl(345 82% 48% / 0.5);
   border-radius: var(--radius-lg);
   background: linear-gradient(
@@ -77,7 +83,7 @@
   font-size: 0.95rem;
 }
 
-.loadingState {
+.estadoCargando {
   min-height: 360px;
   display: flex;
   align-items: center;
@@ -85,7 +91,7 @@
   color: var(--color-muted-foreground);
 }
 
-.loadingInner {
+.cargandoInterno {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -93,26 +99,26 @@
   letter-spacing: 0.04em;
 }
 
-.loadingSpinner {
+.iconoCargando {
   width: 2.5rem;
   height: 2.5rem;
   color: var(--color-primary);
   animation: spin 1s linear infinite;
 }
 
-.mainGrid {
+.rejillaPrincipal {
   display: grid;
   gap: clamp(1.75rem, 4vw, 2.5rem);
 }
 
 @media (min-width: 1024px) {
-  .mainGrid {
+  .rejillaPrincipal {
     grid-template-columns: minmax(0, 1.6fr) minmax(300px, 1fr);
     align-items: flex-start;
   }
 }
 
-.primaryPanel {
+.panelPrincipal {
   position: relative;
   border: var(--pixel-border-width) solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -121,14 +127,14 @@
   box-shadow: var(--shadow-pixel-soft);
 }
 
-.panelOverlay {
+.superposicionPanel {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background: linear-gradient(135deg, hsl(278 62% 32% / 0.35), transparent);
 }
 
-.panelContent {
+.contenidoPanel {
   position: relative;
   z-index: 1;
   display: flex;
@@ -136,14 +142,14 @@
   gap: clamp(1.5rem, 3vw, 2rem);
 }
 
-.panelHeader {
+.cabeceraPanel {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
 }
 
 @media (min-width: 768px) {
-  .panelHeader {
+  .cabeceraPanel {
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
@@ -157,7 +163,7 @@
   min-width: 0;
 }
 
-.breadcrumb {
+.migaPan {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -167,18 +173,18 @@
   color: var(--color-muted-foreground);
 }
 
-.breadcrumbButton {
+.botonMigaPan {
   border: var(--pixel-border-width) solid var(--color-border);
   box-shadow: 3px 3px 0 hsl(240 58% 8% / 0.6);
   background: var(--color-input);
 }
 
-.breadcrumbIcon {
+.iconoMigaPan {
   width: 1.2rem;
   height: 1.2rem;
 }
 
-.title {
+.titulo {
   margin: 0;
   font-family: var(--font-family-display);
   font-size: clamp(2rem, 4vw, 2.8rem);
@@ -187,7 +193,7 @@
   text-shadow: 4px 4px 0 hsl(240 58% 8% / 0.6);
 }
 
-.addButton {
+.botonAgregar {
   font-family: var(--font-family-display);
   letter-spacing: 0.12em;
   background: var(--gradient-sunrise);
@@ -196,13 +202,13 @@
   color: var(--color-primary-foreground);
 }
 
-.statsGrid {
+.rejillaEstadisticas {
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
 }
 
-.statCard {
+.tarjetaEstadistica {
   border: var(--pixel-border-width) solid var(--color-border);
   border-radius: var(--radius-base);
   background: linear-gradient(135deg, hsl(234 32% 22%), hsl(236 36% 14%));
@@ -211,7 +217,7 @@
   box-shadow: var(--shadow-pixel-soft);
 }
 
-.statLabel {
+.etiquetaEstadistica {
   margin: 0 0 0.5rem 0;
   font-size: 0.7rem;
   letter-spacing: 0.18em;
@@ -219,13 +225,13 @@
   color: var(--color-muted-foreground);
 }
 
-.statValue {
+.valorEstadistica {
   margin: 0;
   font-size: 1.75rem;
   font-weight: 700;
 }
 
-.highlightCard {
+.tarjetaDestacada {
   border: var(--pixel-border-width) solid var(--color-border);
   border-radius: var(--radius-lg);
   background: linear-gradient(135deg, hsl(234 32% 20%), hsl(236 36% 12%));
@@ -234,7 +240,7 @@
   color: var(--color-foreground);
 }
 
-.highlightHeader {
+.cabeceraDestacada {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -242,50 +248,50 @@
   gap: 0.75rem;
 }
 
-.highlightLabel {
+.etiquetaDestacada {
   font-size: 0.75rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-muted-foreground);
 }
 
-.highlightDate {
+.fechaDestacada {
   font-size: 0.75rem;
   color: var(--color-muted-foreground);
 }
 
-.highlightStars {
+.estrellasDestacadas {
   margin-top: 1rem;
   display: flex;
   gap: 0.6rem;
 }
 
-.starIcon {
+.iconoEstrella {
   width: 1.25rem;
   height: 1.25rem;
   color: hsl(234 26% 48%);
 }
 
-.starIconActive {
+.iconoEstrellaActiva {
   color: hsl(45 92% 62%);
   fill: hsl(45 92% 62%);
 }
 
-.highlightText {
+.textoDestacado {
   margin: 1rem 0 0 0;
   font-size: 0.95rem;
   line-height: 1.6;
   color: var(--color-foreground);
 }
 
-.infoGrid {
+.rejillaInformacion {
   margin-top: 1.5rem;
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
-.infoCard {
+.tarjetaInformacion {
   border: var(--pixel-border-width) solid var(--color-border);
   border-radius: var(--radius-base);
   background: linear-gradient(135deg, hsl(234 32% 22%), hsl(236 36% 14%));
@@ -293,7 +299,7 @@
   box-shadow: var(--shadow-pixel-soft);
 }
 
-.infoLabel {
+.etiquetaInformacion {
   margin: 0;
   font-size: 0.75rem;
   letter-spacing: 0.18em;
@@ -301,26 +307,26 @@
   color: var(--color-muted-foreground);
 }
 
-.infoValue {
+.valorInformacion {
   margin: 0.35rem 0 0 0;
   font-size: 0.95rem;
 }
 
-.highlightActions {
+.accionesDestacadas {
   margin-top: 1.5rem;
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
 }
 
-.outlineButton {
+.botonContorno {
   border: var(--pixel-border-width) solid var(--color-border) !important;
   background: var(--color-input) !important;
   color: var(--color-foreground) !important;
   box-shadow: 3px 3px 0 hsl(240 58% 8% / 0.6) !important;
 }
 
-.destructiveButton {
+.botonDestructivo {
   background: linear-gradient(
     135deg,
     hsl(2 76% 60%),
@@ -331,7 +337,7 @@
   box-shadow: 3px 3px 0 hsl(240 58% 8% / 0.6) !important;
 }
 
-.reviewsCard {
+.tarjetaResenias {
   border: var(--pixel-border-width) solid var(--color-border);
   border-radius: var(--radius-lg);
   background: linear-gradient(135deg, hsl(234 32% 20%), hsl(236 36% 12%));
@@ -339,7 +345,7 @@
   box-shadow: var(--shadow-pixel-soft);
 }
 
-.sectionHeader {
+.cabeceraSeccion {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -347,37 +353,37 @@
   gap: 0.75rem;
 }
 
-.sectionLabel {
+.etiquetaSeccion {
   font-size: 0.75rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-muted-foreground);
 }
 
-.sectionCounter {
+.contadorSeccion {
   font-size: 0.75rem;
   color: var(--color-muted-foreground);
 }
 
-.filterRow {
+.filaFiltro {
   margin-top: 1rem;
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
 }
 
-.searchWrapper {
+.envolturaBusqueda {
   position: relative;
   width: 100%;
 }
 
 @media (min-width: 640px) {
-  .searchWrapper {
+  .envolturaBusqueda {
     max-width: 20rem;
   }
 }
 
-.searchIcon {
+.iconoBusqueda {
   position: absolute;
   left: 0.85rem;
   top: 50%;
@@ -386,22 +392,22 @@
   pointer-events: none;
 }
 
-.searchInput {
+.entradaBusqueda {
   padding-left: 2.5rem !important;
 }
 
-.filterButton {
+.botonFiltro {
   letter-spacing: 0.08em;
 }
 
-.sectionMessage {
+.mensajeSeccion {
   margin-top: 1.5rem;
   font-size: 0.9rem;
   color: var(--color-muted-foreground);
   letter-spacing: 0.04em;
 }
 
-.placeholderBox {
+.cajaMarcador {
   margin-top: 1.5rem;
   border: 2px dashed var(--color-border);
   border-radius: var(--radius-base);
@@ -411,14 +417,14 @@
   color: var(--color-muted-foreground);
 }
 
-.reviewList {
+.listaResenias {
   margin-top: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
 }
 
-.reviewCard {
+.tarjetaResenia {
   border: var(--pixel-border-width) solid var(--color-border);
   border-radius: var(--radius-base);
   background: linear-gradient(135deg, hsl(234 32% 20%), hsl(236 36% 12%));
@@ -429,7 +435,7 @@
   gap: 0.85rem;
 }
 
-.reviewHeader {
+.cabeceraResenia {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -437,7 +443,7 @@
   gap: 0.75rem;
 }
 
-.reviewMeta {
+.metaResenia {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -446,70 +452,70 @@
   color: var(--color-muted-foreground);
 }
 
-.reviewIndex {
+.indiceResenia {
   font-size: 0.75rem;
   color: var(--color-muted-foreground);
 }
 
-.reviewContent {
+.contenidoResenia {
   margin: 0;
   font-size: 0.95rem;
   line-height: 1.6;
 }
 
-.reviewTags {
+.etiquetasResenia {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   font-size: 0.75rem;
 }
 
-.reviewTag {
+.etiquetaResenia {
   border: var(--pixel-border-width) solid var(--color-border);
   border-radius: var(--radius-sm);
   background: var(--color-input);
   padding: 0.25rem 0.75rem;
 }
 
-.recommendationBadge {
+.insigniaRecomendacion {
   border: var(--pixel-border-width) solid;
   border-radius: var(--radius-sm);
   padding: 0.25rem 0.75rem;
   letter-spacing: 0.04em;
 }
 
-.recommendationPositive {
+.recomendacionPositiva {
   border-color: hsl(150 58% 30%);
   background: linear-gradient(135deg, hsl(150 68% 42%), hsl(150 64% 34%));
   color: hsl(152 100% 88%);
 }
 
-.recommendationNegative {
+.recomendacionNegativa {
   border-color: hsl(345 62% 44%);
   background: linear-gradient(135deg, hsl(345 82% 52%), hsl(345 72% 42%));
   color: var(--color-primary-foreground);
 }
 
-.reviewActions {
+.accionesResenia {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
 }
 
-.sidebar {
+.barraLateral {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
 @media (min-width: 1024px) {
-  .sidebar {
+  .barraLateral {
     position: sticky;
     top: 5rem;
   }
 }
 
-.sidebarCard {
+.tarjetaBarraLateral {
   position: relative;
   border: var(--pixel-border-width) solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -518,7 +524,7 @@
   overflow: hidden;
 }
 
-.sidebarOverlay {
+.superposicionBarraLateral {
   position: absolute;
   inset: 0;
   background: radial-gradient(
@@ -531,14 +537,14 @@
   pointer-events: none;
 }
 
-.sidebarOverlayBorder {
+.bordeSuperposicionBarraLateral {
   position: absolute;
   inset: 0;
   border: var(--pixel-border-width) solid var(--color-border);
   pointer-events: none;
 }
 
-.sidebarContent {
+.contenidoBarraLateral {
   position: relative;
   z-index: 1;
   padding: clamp(1.5rem, 3vw, 2rem);
@@ -547,7 +553,7 @@
   gap: 1.5rem;
 }
 
-.gameFigure {
+.figuraJuego {
   margin: 0;
   border: var(--pixel-border-width) solid var(--color-border);
   border-radius: var(--radius-base);
@@ -555,14 +561,14 @@
   box-shadow: var(--shadow-pixel-soft);
 }
 
-.gameImage {
+.imagenJuego {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
   display: block;
 }
 
-.sidebarTitle {
+.tituloBarraLateral {
   margin: 0 0 0.5rem 0;
   font-family: var(--font-family-display);
   letter-spacing: 0.12em;
@@ -570,13 +576,13 @@
   font-size: 0.95rem;
 }
 
-.gameTags {
+.etiquetasJuego {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-.gameBadge {
+.insigniaJuego {
   border: var(--pixel-border-width) solid var(--color-border);
   border-radius: var(--radius-sm);
   background: var(--color-input) !important;
@@ -584,7 +590,7 @@
   letter-spacing: 0.05em;
 }
 
-.gameBadgePositive {
+.insigniaJuegoPositiva {
   background: linear-gradient(
     135deg,
     hsl(150 68% 42%),
@@ -594,7 +600,7 @@
   color: hsl(152 100% 88%) !important;
 }
 
-.gameBadgeWarning {
+.insigniaJuegoAdvertencia {
   background: linear-gradient(
     135deg,
     hsl(28 90% 46%),
@@ -604,7 +610,7 @@
   color: hsl(30 100% 92%) !important;
 }
 
-.synopsisCard {
+.tarjetaSinopsis {
   border: var(--pixel-border-width) solid var(--color-border);
   border-radius: var(--radius-base);
   background: linear-gradient(135deg, hsl(234 32% 20%), hsl(236 36% 12%));
@@ -612,7 +618,7 @@
   box-shadow: var(--shadow-pixel-soft);
 }
 
-.synopsisLabel {
+.etiquetaSinopsis {
   margin: 0 0 0.5rem 0;
   font-size: 0.75rem;
   letter-spacing: 0.12em;
@@ -620,19 +626,19 @@
   color: var(--color-muted-foreground);
 }
 
-.synopsisText {
+.textoSinopsis {
   margin: 0;
   font-size: 0.9rem;
   line-height: 1.5;
 }
 
-.infoSummaryGrid {
+.rejillaResumenInformacion {
   display: grid;
   gap: 0.75rem;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 }
 
-.infoSummaryItem {
+.elementoResumenInformacion {
   border: var(--pixel-border-width) solid var(--color-border);
   border-radius: var(--radius-base);
   background: linear-gradient(135deg, hsl(234 32% 22%), hsl(236 36% 14%));
@@ -640,7 +646,7 @@
   box-shadow: var(--shadow-pixel-soft);
 }
 
-.infoSummaryLabel {
+.etiquetaResumenInformacion {
   margin: 0 0 0.25rem 0;
   font-size: 0.7rem;
   letter-spacing: 0.12em;
@@ -648,18 +654,18 @@
   color: var(--color-muted-foreground);
 }
 
-.infoSummaryValue {
+.valorResumenInformacion {
   margin: 0;
   font-size: 0.95rem;
 }
 
-.metricGrid {
+.rejillaMetricas {
   display: grid;
   gap: 0.75rem;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 }
 
-.metricCard {
+.tarjetaMetrica {
   border: var(--pixel-border-width) solid var(--color-border);
   border-radius: var(--radius-base);
   background: linear-gradient(135deg, hsl(234 32% 20%), hsl(236 36% 12%));
@@ -668,7 +674,7 @@
   box-shadow: var(--shadow-pixel-soft);
 }
 
-.metricLabel {
+.etiquetaMetrica {
   margin: 0 0 0.35rem 0;
   font-size: 0.7rem;
   letter-spacing: 0.12em;
@@ -676,20 +682,20 @@
   color: var(--color-muted-foreground);
 }
 
-.metricValue {
+.valorMetrica {
   margin: 0;
   font-size: 1.4rem;
   font-weight: 600;
 }
 
-.sidebarNote {
+.notaBarraLateral {
   margin: 0;
   font-size: 0.85rem;
   letter-spacing: 0.04em;
   color: var(--color-muted-foreground);
 }
 
-.dialogContent {
+.contenidoDialogo {
   border: var(--pixel-border-width) solid var(--color-border);
   border-radius: var(--radius-lg);
   background: linear-gradient(135deg, hsl(234 32% 20%), hsl(236 36% 12%));
@@ -697,20 +703,20 @@
   padding: clamp(1.5rem, 4vw, 2rem);
 }
 
-.dialogDescription {
+.descripcionDialogo {
   margin: 0;
   font-size: 0.9rem;
   color: var(--color-muted-foreground);
   letter-spacing: 0.04em;
 }
 
-.dialogSection {
+.seccionDialogo {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
 }
 
-.dialogLabel {
+.etiquetaDialogo {
   font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -718,12 +724,12 @@
   color: var(--color-muted-foreground);
 }
 
-.dialogStars {
+.estrellasDialogo {
   display: flex;
   gap: 0.5rem;
 }
 
-.dialogStarButton {
+.botonEstrellaDialogo {
   border: var(--pixel-border-width) solid var(--color-border);
   border-radius: var(--radius-sm);
   background: var(--color-input);
@@ -733,38 +739,38 @@
   cursor: pointer;
 }
 
-.dialogStarButtonActive {
+.botonEstrellaDialogoActiva {
   background: linear-gradient(135deg, hsl(45 92% 58%), hsl(45 90% 48%));
   color: hsl(45 100% 94%);
 }
 
-.dialogField {
+.campoDialogo {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.dialogTextarea {
+.areaTextoDialogo {
   min-height: 140px;
 }
 
-.dialogFieldGrid {
+.rejillaCampoDialogo {
   display: grid;
   gap: 0.75rem;
 }
 
 @media (min-width: 600px) {
-  .dialogFieldGrid {
+  .rejillaCampoDialogo {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-.dialogInput,
-.dialogSelect {
+.entradaDialogo,
+.seleccionDialogo {
   background: var(--color-input);
 }
 
-.dialogSwitch {
+.interruptorDialogo {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -776,7 +782,7 @@
   box-shadow: var(--shadow-pixel-soft);
 }
 
-.dialogSwitchInfo {
+.informacionInterruptorDialogo {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -784,56 +790,56 @@
   color: var(--color-muted-foreground);
 }
 
-.dialogActions {
+.accionesDialogo {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
   justify-content: flex-end;
 }
 
-.dialogCancel {
+.cancelarDialogo {
   border: var(--pixel-border-width) solid var(--color-border);
   background: var(--color-input);
   color: var(--color-foreground);
 }
 
-.dialogConfirm {
+.confirmarDialogo {
   background: var(--gradient-sunrise);
   box-shadow: var(--shadow-pixel-highlight);
   color: var(--color-primary-foreground);
 }
 
-.dialogSaving {
+.guardandoDialogo {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   letter-spacing: 0.04em;
 }
 
-.dialogSpinner {
+.iconoGuardandoDialogo {
   width: 1rem;
   height: 1rem;
   animation: spin 1s linear infinite;
 }
 
-.starIconSmall {
+.iconoEstrellaPequena {
   width: 1rem;
   height: 1rem;
   color: hsl(234 26% 48%);
 }
 
-.starIconSmallActive {
+.iconoEstrellaPequenaActiva {
   color: hsl(45 92% 62%);
   fill: hsl(45 92% 62%);
 }
 
-.actionIcon {
+.iconoAccion {
   width: 1rem;
   height: 1rem;
 }
 
 @media (max-width: 720px) {
-  .page {
+  .pagina {
     padding: clamp(2rem, 6vw, 3rem) 1rem clamp(3rem, 8vw, 4rem);
   }
 
@@ -879,7 +885,7 @@
 }
 
 @media (max-width: 540px) {
-  .page {
+  .pagina {
     padding: clamp(1.5rem, 6vw, 2.5rem) 0.75rem clamp(2.5rem, 8vw, 3.5rem);
   }
 

@@ -236,22 +236,6 @@ const Resenias = () => {
     });
   }, [hayBusquedaActiva, reseniasOrdenadas, terminoBusqueda]);
 
-  const reseniaDestacada = reseniasFiltradas[0] ?? null;
-
-  const resumenReseniaDestacada = useMemo(() => {
-    if (!reseniaDestacada) {
-      return hayBusquedaActiva
-        ? "No se encontraron reseñas que coincidan con tu búsqueda."
-        : "Aún no hay reseñas para este juego. Sé la primera persona en compartir tu experiencia.";
-    }
-
-    if (!reseniaDestacada.texto || reseniaDestacada.texto.trim() === "") {
-      return "Esta reseña no incluye comentario, pero sí aporta valoración y datos de juego.";
-    }
-
-    return reseniaDestacada.texto;
-  }, [reseniaDestacada, hayBusquedaActiva]);
-
   const promedioPuntuacion = useMemo(() => {
     if (resenias.length === 0) {
       return null;
@@ -456,10 +440,10 @@ const Resenias = () => {
   };
 
   return (
-    <div className={styles.page}>
+    <div className={styles.pagina}>
       <div className={styles.layout}>
         {errorJuegos && (
-          <div className={styles.errorBanner}>
+          <div className={styles.bannerError}>
             <p>
               <strong>Error al cargar juegos</strong>
             </p>
@@ -468,165 +452,73 @@ const Resenias = () => {
         )}
 
         {errorJuego && !juegoActual ? (
-          <div className={styles.errorCard}>
+          <div className={styles.tarjetaError}>
             <h2>No se encontró el juego</h2>
             <p>{errorJuego}</p>
           </div>
         ) : !juegoActual ? (
-          <div className={styles.loadingState}>
-            <div className={styles.loadingInner}>
-              <Loader2 className={styles.loadingSpinner} aria-hidden="true" />
+          <div className={styles.estadoCargando}>
+            <div className={styles.cargandoInterno}>
+              <Loader2 className={styles.iconoCargando} aria-hidden="true" />
               <p>Cargando información del juego...</p>
             </div>
           </div>
         ) : (
-          <div className={styles.mainGrid}>
-            <section className={styles.primaryPanel}>
-              <div className={styles.panelOverlay} />
-              <div className={styles.panelContent}>
-                <div className={styles.panelHeader}>
+          <div className={styles.rejillaPrincipal}>
+            <section className={styles.panelPrincipal}>
+              <div className={styles.superposicionPanel} />
+              <div className={styles.contenidoPanel}>
+                <div className={styles.cabeceraPanel}>
                   <div>
-                    <div className={styles.breadcrumb}>
+                    <div className={styles.migaPan}>
                       <Link to={enlaceRetorno}>
                         <Button
                           variant="outline"
                           size="icon"
-                          className={styles.breadcrumbButton}
+                          className={styles.botonMigaPan}
                         >
                           <ArrowLeft
-                            className={styles.breadcrumbIcon}
+                            className={styles.iconoMigaPan}
                             aria-hidden="true"
                           />
                         </Button>
                       </Link>
                       <span>Reseñas</span>
                     </div>
-                    <h1 className={styles.title}>{juegoActual.nombre}</h1>
+                    <h1 className={styles.titulo}>{juegoActual.nombre}</h1>
                   </div>
                   <Button
                     onClick={() => abrirFormulario(null)}
-                    className={styles.addButton}
+                    className={styles.botonAgregar}
                   >
                     Agregar reseña
                   </Button>
                 </div>
 
-                <div className={styles.statsGrid}>
-                  <div className={styles.statCard}>
-                    <p className={styles.statLabel}>Reseñas</p>
-                    <p className={styles.statValue}>{resenias.length}</p>
+                <div className={styles.rejillaEstadisticas}>
+                  <div className={styles.tarjetaEstadistica}>
+                    <p className={styles.etiquetaEstadistica}>Reseñas</p>
+                    <p className={styles.valorEstadistica}>{resenias.length}</p>
                   </div>
-                  <div className={styles.statCard}>
-                    <p className={styles.statLabel}>Promedio</p>
-                    <p className={styles.statValue}>
+                  <div className={styles.tarjetaEstadistica}>
+                    <p className={styles.etiquetaEstadistica}>Promedio</p>
+                    <p className={styles.valorEstadistica}>
                       {promedioPuntuacion ?? "—"}
                     </p>
                   </div>
-                  <div className={styles.statCard}>
-                    <p className={styles.statLabel}>Horas medias</p>
-                    <p className={styles.statValue}>
+                  <div className={styles.tarjetaEstadistica}>
+                    <p className={styles.etiquetaEstadistica}>Horas medias</p>
+                    <p className={styles.valorEstadistica}>
                       {horasPromedio !== null ? `${horasPromedio}h` : "—"}
                     </p>
                   </div>
                 </div>
 
-                <div className={styles.highlightCard}>
-                  <div className={styles.highlightHeader}>
-                    <p className={styles.highlightLabel}>Reseña destacada</p>
-                    {reseniaDestacada && (
-                      <span className={styles.highlightDate}>
-                        {formatoFecha(
-                          reseniaDestacada.fechaActualizacion ??
-                            reseniaDestacada.fechaCreacion
-                        )}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className={styles.highlightStars}>
-                    {Array.from({ length: 5 }, (_, indice) => indice + 1).map(
-                      (valor) => (
-                        <Star
-                          key={valor}
-                          className={cn(
-                            styles.starIcon,
-                            valor <= (reseniaDestacada?.puntuacion ?? 0) &&
-                              styles.starIconActive
-                          )}
-                          aria-hidden="true"
-                        />
-                      )
-                    )}
-                  </div>
-
-                  <p className={styles.highlightText}>
-                    {cargandoResenias
-                      ? "Cargando reseñas..."
-                      : resumenReseniaDestacada}
-                  </p>
-
-                  {reseniaDestacada && (
-                    <>
-                      <div className={styles.infoGrid}>
-                        <div className={styles.infoCard}>
-                          <p className={styles.infoLabel}>Dificultad</p>
-                          <p className={styles.infoValue}>
-                            {reseniaDestacada.dificultad || "Sin datos"}
-                          </p>
-                        </div>
-                        <div className={styles.infoCard}>
-                          <p className={styles.infoLabel}>¿Recomienda?</p>
-                          <p className={styles.infoValue}>
-                            {reseniaDestacada.recomendaria ? "Sí" : "No"}
-                          </p>
-                        </div>
-                        <div className={styles.infoCard}>
-                          <p className={styles.infoLabel}>Horas jugadas</p>
-                          <p className={styles.infoValue}>
-                            {reseniaDestacada.horasJugadas !== null &&
-                            reseniaDestacada.horasJugadas !== undefined
-                              ? `${reseniaDestacada.horasJugadas} h`
-                              : "Sin datos"}
-                          </p>
-                        </div>
-                        <div className={styles.infoCard}>
-                          <p className={styles.infoLabel}>Actualizada</p>
-                          <p className={styles.infoValue}>
-                            {formatoFecha(
-                              reseniaDestacada.fechaActualizacion ??
-                                reseniaDestacada.fechaCreacion
-                            )}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className={styles.highlightActions}>
-                        <Button
-                          variant="outline"
-                          onClick={() => abrirFormulario(reseniaDestacada)}
-                          className={styles.outlineButton}
-                        >
-                          <Pencil size={16} aria-hidden="true" />
-                          Editar reseña
-                        </Button>
-                        <Button
-                          variant="destructive"
-                          onClick={() => manejarEliminar(reseniaDestacada)}
-                          className={styles.destructiveButton}
-                        >
-                          <Trash2 size={16} aria-hidden="true" />
-                          Eliminar reseña
-                        </Button>
-                      </div>
-                    </>
-                  )}
-                </div>
-
-                <div className={styles.reviewsCard}>
-                  <div className={styles.sectionHeader}>
-                    <p className={styles.sectionLabel}>Todas las reseñas</p>
+                <div className={styles.tarjetaResenias}>
+                  <div className={styles.cabeceraSeccion}>
+                    <p className={styles.etiquetaSeccion}>Todas las reseñas</p>
                     {reseniasOrdenadas.length > 0 && (
-                      <span className={styles.sectionCounter}>
+                      <span className={styles.contadorSeccion}>
                         {hayBusquedaActiva
                           ? `${reseniasFiltradas.length} coincidencia${
                               reseniasFiltradas.length === 1 ? "" : "s"
@@ -638,10 +530,10 @@ const Resenias = () => {
                     )}
                   </div>
 
-                  <div className={styles.filterRow}>
-                    <div className={styles.searchWrapper}>
+                  <div className={styles.filaFiltro}>
+                    <div className={styles.envolturaBusqueda}>
                       <Search
-                        className={styles.searchIcon}
+                        className={styles.iconoBusqueda}
                         size={16}
                         aria-hidden="true"
                       />
@@ -651,7 +543,7 @@ const Resenias = () => {
                           setTerminoBusqueda(evento.target.value)
                         }
                         placeholder="Buscar por comentario, dificultad, horas..."
-                        className={styles.searchInput}
+                        className={styles.entradaBusqueda}
                         aria-label="Buscar reseñas"
                       />
                     </div>
@@ -661,7 +553,7 @@ const Resenias = () => {
                         variant="ghost"
                         size="sm"
                         onClick={() => setTerminoBusqueda("")}
-                        className={styles.filterButton}
+                        className={styles.botonFiltro}
                       >
                         Limpiar
                       </Button>
@@ -669,28 +561,28 @@ const Resenias = () => {
                   </div>
 
                   {cargandoResenias ? (
-                    <div className={styles.sectionMessage}>
+                    <div className={styles.mensajeSeccion}>
                       Cargando reseñas...
                     </div>
                   ) : reseniasFiltradas.length === 0 ? (
-                    <div className={styles.placeholderBox}>
+                    <div className={styles.cajaMarcador}>
                       {hayBusquedaActiva
                         ? "No se encontraron reseñas que coincidan con tu búsqueda."
                         : 'Aún no hay reseñas registradas. Usa "Agregar reseña" para compartir la primera experiencia.'}
                     </div>
                   ) : (
-                    <div className={styles.reviewList}>
+                    <div className={styles.listaResenias}>
                       {reseniasFiltradas.map((resenia, indice) => {
                         const comentario = resenia.texto?.trim();
 
                         return (
                           <article
                             key={resenia.id}
-                            className={styles.reviewCard}
+                            className={styles.tarjetaResenia}
                           >
-                            <div className={styles.reviewHeader}>
-                              <div className={styles.reviewMeta}>
-                                <div className={styles.reviewStars}>
+                            <div className={styles.cabeceraResenia}>
+                              <div className={styles.metaResenia}>
+                                <div className={styles.estrellasResenia}>
                                   {Array.from(
                                     { length: 5 },
                                     (_, estrella) => estrella + 1
@@ -698,19 +590,19 @@ const Resenias = () => {
                                     <Star
                                       key={valor}
                                       className={cn(
-                                        styles.starIconSmall,
+                                        styles.iconoEstrellaPequena,
                                         valor <= (resenia.puntuacion ?? 0) &&
-                                          styles.starIconSmallActive
+                                          styles.iconoEstrellaPequenaActiva
                                       )}
                                       aria-hidden="true"
                                     />
                                   ))}
                                 </div>
-                                <span className={styles.reviewIndex}>
+                                <span className={styles.indiceResenia}>
                                   #{indice + 1}
                                 </span>
                               </div>
-                              <div className={styles.reviewDate}>
+                              <div className={styles.fechaResenia}>
                                 {formatoFecha(
                                   resenia.fechaActualizacion ??
                                     resenia.fechaCreacion
@@ -718,17 +610,17 @@ const Resenias = () => {
                               </div>
                             </div>
 
-                            <p className={styles.reviewContent}>
+                            <p className={styles.contenidoResenia}>
                               {comentario && comentario.length > 0
                                 ? comentario
                                 : "Esta reseña no incluye comentario, pero sí aporta valoración y datos."}
                             </p>
 
-                            <div className={styles.reviewTags}>
-                              <span className={styles.reviewTag}>
+                            <div className={styles.etiquetasResenia}>
+                              <span className={styles.etiquetaResenia}>
                                 {resenia.dificultad || "Sin dificultad"}
                               </span>
-                              <span className={styles.reviewTag}>
+                              <span className={styles.etiquetaResenia}>
                                 {resenia.horasJugadas !== null &&
                                 resenia.horasJugadas !== undefined
                                   ? `${resenia.horasJugadas} h`
@@ -736,10 +628,10 @@ const Resenias = () => {
                               </span>
                               <Badge
                                 className={cn(
-                                  styles.recommendationBadge,
+                                  styles.insigniaRecomendacion,
                                   resenia.recomendaria
-                                    ? styles.recommendationPositive
-                                    : styles.recommendationNegative
+                                    ? styles.recomendacionPositiva
+                                    : styles.recomendacionNegativa
                                 )}
                                 variant="outline"
                               >
@@ -749,12 +641,12 @@ const Resenias = () => {
                               </Badge>
                             </div>
 
-                            <div className={styles.reviewActions}>
+                            <div className={styles.accionesResenia}>
                               <Button
                                 variant="outline"
                                 size="sm"
                                 onClick={() => abrirFormulario(resenia)}
-                                className={styles.outlineButton}
+                                className={styles.botonContorno}
                               >
                                 <Pencil size={14} aria-hidden="true" />
                                 Editar
@@ -763,7 +655,7 @@ const Resenias = () => {
                                 variant="destructive"
                                 size="sm"
                                 onClick={() => manejarEliminar(resenia)}
-                                className={styles.destructiveButton}
+                                className={styles.botonDestructivo}
                               >
                                 <Trash2 size={14} aria-hidden="true" />
                                 Eliminar
@@ -778,42 +670,42 @@ const Resenias = () => {
               </div>
             </section>
 
-            <aside className={styles.sidebar}>
-              <div className={styles.sidebarCard}>
-                <div className={styles.sidebarOverlay}>
-                  <div className={styles.sidebarOverlayBorder} />
+            <aside className={styles.barraLateral}>
+              <div className={styles.tarjetaBarraLateral}>
+                <div className={styles.superposicionBarraLateral}>
+                  <div className={styles.bordeSuperposicionBarraLateral} />
                 </div>
-                <div className={styles.sidebarContent}>
-                  <figure className={styles.gameFigure}>
+                <div className={styles.contenidoBarraLateral}>
+                  <figure className={styles.figuraJuego}>
                     <img
                       src={
                         juegoActual.imagen ||
                         "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800"
                       }
                       alt={juegoActual.nombre}
-                      className={styles.gameImage}
+                      className={styles.imagenJuego}
                       loading="lazy"
                       decoding="async"
                     />
                   </figure>
 
                   <div>
-                    <h2 className={styles.sidebarTitle}>
+                    <h2 className={styles.tituloBarraLateral}>
                       Información del juego
                     </h2>
-                    <div className={styles.gameTags}>
-                      <Badge className={styles.gameBadge} variant="outline">
+                    <div className={styles.etiquetasJuego}>
+                      <Badge className={styles.insigniaJuego} variant="outline">
                         {juegoActual.genero}
                       </Badge>
-                      <Badge className={styles.gameBadge} variant="outline">
+                      <Badge className={styles.insigniaJuego} variant="outline">
                         {juegoActual.plataforma}
                       </Badge>
                       <Badge
                         className={cn(
-                          styles.gameBadge,
+                          styles.insigniaJuego,
                           juegoActual.completado
-                            ? styles.gameBadgePositive
-                            : styles.gameBadgeWarning
+                            ? styles.insigniaJuegoPositiva
+                            : styles.insigniaJuegoAdvertencia
                         )}
                         variant="outline"
                       >
@@ -822,9 +714,9 @@ const Resenias = () => {
                     </div>
                   </div>
 
-                  <div className={styles.synopsisCard}>
-                    <p className={styles.synopsisLabel}>Sinopsis</p>
-                    <p className={styles.synopsisText}>
+                  <div className={styles.tarjetaSinopsis}>
+                    <p className={styles.etiquetaSinopsis}>Sinopsis</p>
+                    <p className={styles.textoSinopsis}>
                       {juegoActual.sinopsis &&
                       juegoActual.sinopsis.trim() !== ""
                         ? juegoActual.sinopsis
@@ -832,63 +724,79 @@ const Resenias = () => {
                     </p>
                   </div>
 
-                  <div className={styles.infoSummaryGrid}>
-                    <div className={styles.infoSummaryItem}>
-                      <p className={styles.infoSummaryLabel}>Lanzamiento</p>
-                      <p className={styles.infoSummaryValue}>
+                  <div className={styles.rejillaResumenInformacion}>
+                    <div className={styles.elementoResumenInformacion}>
+                      <p className={styles.etiquetaResumenInformacion}>
+                        Lanzamiento
+                      </p>
+                      <p className={styles.valorResumenInformacion}>
                         {juegoActual.año ?? "—"}
                       </p>
                     </div>
-                    <div className={styles.infoSummaryItem}>
-                      <p className={styles.infoSummaryLabel}>Desarrollador</p>
-                      <p className={styles.infoSummaryValue}>
+                    <div className={styles.elementoResumenInformacion}>
+                      <p className={styles.etiquetaResumenInformacion}>
+                        Desarrollador
+                      </p>
+                      <p className={styles.valorResumenInformacion}>
                         {juegoActual.desarrollador &&
                         juegoActual.desarrollador.trim() !== ""
                           ? juegoActual.desarrollador
                           : "—"}
                       </p>
                     </div>
-                    <div className={styles.infoSummaryItem}>
-                      <p className={styles.infoSummaryLabel}>Creada</p>
-                      <p className={styles.infoSummaryValue}>
+                    <div className={styles.elementoResumenInformacion}>
+                      <p className={styles.etiquetaResumenInformacion}>
+                        Creada
+                      </p>
+                      <p className={styles.valorResumenInformacion}>
                         {formatoFecha(juegoActual.fechaCreacion)}
                       </p>
                     </div>
-                    <div className={styles.infoSummaryItem}>
-                      <p className={styles.infoSummaryLabel}>Reseñas totales</p>
-                      <p className={styles.infoSummaryValue}>
+                    <div className={styles.elementoResumenInformacion}>
+                      <p className={styles.etiquetaResumenInformacion}>
+                        Reseñas totales
+                      </p>
+                      <p className={styles.valorResumenInformacion}>
                         {resenias.length}
                       </p>
                     </div>
-                    <div className={styles.infoSummaryItem}>
-                      <p className={styles.infoSummaryLabel}>Promedio</p>
-                      <p className={styles.infoSummaryValue}>
+                    <div className={styles.elementoResumenInformacion}>
+                      <p className={styles.etiquetaResumenInformacion}>
+                        Promedio
+                      </p>
+                      <p className={styles.valorResumenInformacion}>
                         {promedioPuntuacion ?? "—"}
                       </p>
                     </div>
-                    <div className={styles.infoSummaryItem}>
-                      <p className={styles.infoSummaryLabel}>Recomiendan</p>
-                      <p className={styles.infoSummaryValue}>
+                    <div className={styles.elementoResumenInformacion}>
+                      <p className={styles.etiquetaResumenInformacion}>
+                        Recomiendan
+                      </p>
+                      <p className={styles.valorResumenInformacion}>
                         {porcentajeRecomendacion !== null
                           ? `${porcentajeRecomendacion}%`
                           : "—"}
                       </p>
                     </div>
-                    <div className={styles.infoSummaryItem}>
-                      <p className={styles.infoSummaryLabel}>Horas medias</p>
-                      <p className={styles.infoSummaryValue}>
+                    <div className={styles.elementoResumenInformacion}>
+                      <p className={styles.etiquetaResumenInformacion}>
+                        Horas medias
+                      </p>
+                      <p className={styles.valorResumenInformacion}>
                         {horasPromedio !== null ? `${horasPromedio}h` : "—"}
                       </p>
                     </div>
-                    <div className={styles.infoSummaryItem}>
-                      <p className={styles.infoSummaryLabel}>Última reseña</p>
-                      <p className={styles.infoSummaryValue}>
+                    <div className={styles.elementoResumenInformacion}>
+                      <p className={styles.etiquetaResumenInformacion}>
+                        Última reseña
+                      </p>
+                      <p className={styles.valorResumenInformacion}>
                         {ultimaActualizacion ?? "—"}
                       </p>
                     </div>
                   </div>
 
-                  <p className={styles.sidebarNote}>
+                  <p className={styles.notaBarraLateral}>
                     Toda la información se actualiza automáticamente cada vez
                     que agregas, editas o eliminas una reseña.
                   </p>
@@ -900,21 +808,21 @@ const Resenias = () => {
       </div>
 
       <Dialog open={formularioAbierto} onOpenChange={manejarCierreDialogo}>
-        <DialogContent className={styles.dialogContent}>
+        <DialogContent className={styles.contenidoDialogo}>
           <DialogHeader>
             <DialogTitle>
               {reseniaEditando ? "Editar reseña" : "Crear reseña"}
             </DialogTitle>
-            <DialogDescription className={styles.dialogDescription}>
+            <DialogDescription className={styles.descripcionDialogo}>
               Comparte cómo fue tu experiencia con este juego. La comunidad usa
               estos datos para decidir si se anima a probarlo.
             </DialogDescription>
           </DialogHeader>
 
-          <div className={styles.dialogSection}>
+          <div className={styles.seccionDialogo}>
             <div>
-              <p className={styles.dialogLabel}>Puntuación</p>
-              <div className={styles.dialogStars}>
+              <p className={styles.etiquetaDialogo}>Puntuación</p>
+              <div className={styles.estrellasDialogo}>
                 {Array.from({ length: 5 }, (_, indice) => indice + 1).map(
                   (valor) => (
                     <button
@@ -924,10 +832,10 @@ const Resenias = () => {
                         manejarCambioFormulario("puntuacion", valor)
                       }
                       className={cn(
-                        styles.dialogStarButton,
+                        styles.botonEstrellaDialogo,
                         formData.puntuacion !== null &&
                           valor <= formData.puntuacion &&
-                          styles.dialogStarButtonActive
+                          styles.botonEstrellaDialogoActiva
                       )}
                       aria-label={`Asignar puntuación de ${valor}`}
                     >
@@ -938,8 +846,8 @@ const Resenias = () => {
               </div>
             </div>
 
-            <div className={styles.dialogField}>
-              <label className={styles.dialogLabel} htmlFor="comentario">
+            <div className={styles.campoDialogo}>
+              <label className={styles.etiquetaDialogo} htmlFor="comentario">
                 Comentario
               </label>
               <Textarea
@@ -950,13 +858,13 @@ const Resenias = () => {
                 }
                 placeholder="Describe tu experiencia, los puntos fuertes y lo que mejorarías"
                 minLength={10}
-                className={styles.dialogTextarea}
+                className={styles.areaTextoDialogo}
               />
             </div>
 
-            <div className={styles.dialogFieldGrid}>
-              <div className={styles.dialogField}>
-                <label className={styles.dialogLabel} htmlFor="horas">
+            <div className={styles.rejillaCampoDialogo}>
+              <div className={styles.campoDialogo}>
+                <label className={styles.etiquetaDialogo} htmlFor="horas">
                   Horas jugadas
                 </label>
                 <Input
@@ -966,12 +874,12 @@ const Resenias = () => {
                     manejarCambioFormulario("horasJugadas", evento.target.value)
                   }
                   placeholder="Ej. 25"
-                  className={styles.dialogInput}
+                  className={styles.entradaDialogo}
                   inputMode="numeric"
                 />
               </div>
-              <div className={styles.dialogField}>
-                <label className={styles.dialogLabel} htmlFor="dificultad">
+              <div className={styles.campoDialogo}>
+                <label className={styles.etiquetaDialogo} htmlFor="dificultad">
                   Dificultad percibida
                 </label>
                 <Select
@@ -981,7 +889,7 @@ const Resenias = () => {
                     manejarCambioFormulario("dificultad", evento.target.value)
                   }
                   placeholder="Selecciona dificultad"
-                  className={styles.dialogSelect}
+                  className={styles.seleccionDialogo}
                 >
                   {dificultades.map((opcion) => (
                     <option key={opcion} value={opcion}>
@@ -992,9 +900,9 @@ const Resenias = () => {
               </div>
             </div>
 
-            <div className={styles.dialogSwitch}>
-              <div className={styles.dialogSwitchInfo}>
-                <p className={styles.dialogLabel}>¿Lo recomendarías?</p>
+            <div className={styles.interruptorDialogo}>
+              <div className={styles.informacionInterruptorDialogo}>
+                <p className={styles.etiquetaDialogo}>¿Lo recomendarías?</p>
                 <p>
                   Indica si consideras que otras personas deberían probarlo.
                 </p>
@@ -1007,12 +915,12 @@ const Resenias = () => {
               />
             </div>
 
-            <div className={styles.dialogActions}>
+            <div className={styles.accionesDialogo}>
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => manejarCierreDialogo(false)}
-                className={styles.dialogCancel}
+                className={styles.cancelarDialogo}
                 disabled={guardando}
               >
                 Cancelar
@@ -1020,13 +928,13 @@ const Resenias = () => {
               <Button
                 type="button"
                 onClick={manejarGuardar}
-                className={styles.dialogConfirm}
+                className={styles.confirmarDialogo}
                 disabled={guardando}
               >
                 {guardando ? (
-                  <span className={styles.dialogSaving}>
+                  <span className={styles.guardandoDialogo}>
                     <Loader2
-                      className={styles.dialogSpinner}
+                      className={styles.iconoGuardandoDialogo}
                       aria-hidden="true"
                     />{" "}
                     Guardando...
