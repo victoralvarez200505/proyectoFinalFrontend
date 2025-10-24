@@ -1,0 +1,41 @@
+.selectWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.select {
+  appearance: none;
+  width: 100%;
+  height: 2.75rem;
+  border-radius: var(--radio-pequeno);
+  border: var(--ancho-borde-pixel) solid var(--color-borde);
+  background-color: var(--color-campo);
+  color: var(--color-texto);
+  padding: 0.625rem 2.5rem 0.625rem 0.75rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  box-shadow: 3px 3px 0 hsl(240 58% 8% / 0.7);
+  transition: transform var(--transicion-base),
+    box-shadow var(--transicion-base), border-color var(--transicion-base);
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--color-anillo);
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 hsl(240 58% 8%), 0 0 0 4px hsl(345 82% 60% / 0.24);
+}
+
+.select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.chevron {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: hsl(232 24% 78%);
+}
