@@ -21,10 +21,17 @@ export const GameCarousel = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const hasGames = games.length > 0;
 
-  const orderedGames = useMemo(() => [...games], [games]);
+  const orderedGames = useMemo(() => {
+    return [...games].sort((a, b) => {
+      const fechaA = a.fechaCreacion ? new Date(a.fechaCreacion).getTime() : 0;
+      const fechaB = b.fechaCreacion ? new Date(b.fechaCreacion).getTime() : 0;
+      return fechaB - fechaA;
+    });
+  }, [games]);
 
   const scrollToIndex = useCallback(
     (index: number, behavior: ScrollBehavior = "smooth") => {
@@ -46,6 +53,23 @@ export const GameCarousel = ({
     },
     []
   );
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) {
+      return;
+    }
+
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setPrefersReducedMotion(mediaQuery.matches);
+
+    const handleChange = (event: MediaQueryListEvent) => {
+      setPrefersReducedMotion(event.matches);
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
 
   useEffect(() => {
     const container = scrollRef.current;
@@ -97,7 +121,12 @@ export const GameCarousel = ({
   }, [orderedGames.length, scrollToIndex]);
 
   useEffect(() => {
-    if (orderedGames.length <= 1 || isHovered || isFocused) {
+    if (
+      prefersReducedMotion ||
+      orderedGames.length <= 1 ||
+      isHovered ||
+      isFocused
+    ) {
       return;
     }
 
@@ -110,7 +139,13 @@ export const GameCarousel = ({
     }, 5000);
 
     return () => window.clearInterval(intervalo);
-  }, [orderedGames.length, isHovered, isFocused, scrollToIndex]);
+  }, [
+    orderedGames.length,
+    isHovered,
+    isFocused,
+    prefersReducedMotion,
+    scrollToIndex,
+  ]);
 
   const handleNavigate = (direction: "left" | "right") => {
     if (orderedGames.length <= 1) {
@@ -156,7 +191,7 @@ export const GameCarousel = ({
       <div className={styles.encabezado}>
         <div className={styles.grupoTitulos}>
           <span className={styles.iconoEncabezado}>
-            <Sparkles size={20} strokeWidth={1.5} />
+            <Sparkles size={20} strokeWidth={1.5} aria-hidden="true" />
           </span>
           <div>
             <h3 className={styles.titulo}>{title}</h3>
@@ -168,6 +203,7 @@ export const GameCarousel = ({
             type="button"
             className={styles.botonControl}
             aria-label="Desplazar carrusel a la izquierda"
+            aria-controls="carrusel-juegos"
             onClick={() => handleNavigate("left")}
             disabled={orderedGames.length <= 1}
           >
@@ -177,6 +213,7 @@ export const GameCarousel = ({
             type="button"
             className={styles.botonControl}
             aria-label="Desplazar carrusel a la derecha"
+            aria-controls="carrusel-juegos"
             onClick={() => handleNavigate("right")}
             disabled={orderedGames.length <= 1}
           >
@@ -195,6 +232,7 @@ export const GameCarousel = ({
         <div
           ref={scrollRef}
           className={styles.visor}
+          id="carrusel-juegos"
           onFocus={handleFocus}
           onBlur={handleBlur}
         >
@@ -232,6 +270,8 @@ export const GameCarousel = ({
                 tabIndex={onSelect ? 0 : undefined}
                 onClick={onSelect ? handleClick : undefined}
                 onKeyDown={onSelect ? handleKeyDown : undefined}
+                aria-label={`${game.nombre}, ${game.genero}`}
+                aria-current={isActive ? "true" : undefined}
               >
                 <div className={styles.portada}>
                   {tieneImagen ? (
