@@ -1,6 +1,8 @@
 import { createBrowserRouter } from "react-router";
 import RootLayout from "@/layouts/RootLayout";
 import Inicio from "@/pages/Inicio";
+import Genero from "@/pages/Genero.tsx";
+import Resenias from "@/pages/Resenias.tsx";
 import PaginaNoEncontrada from "@/pages/PaginaNoEncontrada";
 
 export const Router = createBrowserRouter([
@@ -11,6 +13,14 @@ export const Router = createBrowserRouter([
       {
         index: true,
         element: <Inicio />,
+      },
+      {
+        path: "genero/:genero",
+        element: <Genero />,
+      },
+      {
+        path: "resenias/:id",
+        element: <Resenias />,
       },
       { path: "*", element: <PaginaNoEncontrada /> },
     ],
