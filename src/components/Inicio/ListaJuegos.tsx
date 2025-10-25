@@ -1,11 +1,8 @@
-import type { ChangeEvent } from "react";
 import {
   AlertCircle,
   Gamepad2,
   Loader2,
   Plus,
-  Search,
-  XCircle,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -18,8 +15,9 @@ import {
 } from "@/components/ui/general/alertas";
 import type { Juego } from "@/tipos/juego";
 import styles from "@/styles/pages/Inicio.module.css";
-import { apiConfig, uiConfig } from "@/config";
+import { apiConfig, uiConfig, bibliotecaConfig } from "@/config";
 import { cn, reemplazarVariables } from "@/lib/utils";
+// import { BarraBusqueda } from "@/components/ui/general/BarraBusqueda";
 
 interface ListaJuegosProps {
   juegos: Juego[];
@@ -29,7 +27,6 @@ interface ListaJuegosProps {
   error: string | null;
   hayBusquedaActiva: boolean;
   terminoBusqueda: string;
-  placeholderBusqueda: string;
   textoSinResultados: string;
   paginaActual: number;
   totalPaginas: number;
@@ -57,7 +54,6 @@ export const ListaJuegos = ({
   error,
   hayBusquedaActiva,
   terminoBusqueda,
-  placeholderBusqueda,
   textoSinResultados,
   paginaActual,
   totalPaginas,
@@ -129,10 +125,6 @@ export const ListaJuegos = ({
 
   const paginas = crearRangoPaginado(totalPaginas);
 
-  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onSearchChange(event.target.value);
-  };
-
   return (
     <section className={styles.seccionLista} aria-labelledby="lista-juegos">
       <div className={styles.encabezadoLista}>
@@ -143,14 +135,27 @@ export const ListaJuegos = ({
           <p className={styles.subtituloLista}>{subtituloSeccion}</p>
         </div>
         <div className={styles.filtros}>
-          <div className={styles.contenedorBusqueda}>
-            <Search size={18} className={styles.iconoBusqueda} />
+          <div className={styles.portadaCampoBusqueda}>
+            <svg
+              className={styles.iconoBusquedaPortada}
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
             <input
               type="search"
               value={terminoBusqueda}
-              onChange={handleSearchChange}
-              placeholder={placeholderBusqueda}
-              className={styles.entradaBusqueda}
+              onChange={(e) => onSearchChange(e.target.value)}
+              placeholder={bibliotecaConfig.placeholderBusqueda}
+              className={styles.entradaBusquedaPortada}
               aria-label="Buscar en la biblioteca"
             />
             {terminoBusqueda ? (
@@ -160,15 +165,28 @@ export const ListaJuegos = ({
                 onClick={onClearBusqueda}
                 aria-label="Limpiar búsqueda"
               >
-                <XCircle size={18} />
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="15" y1="9" x2="9" y2="15" />
+                  <line x1="9" y1="9" x2="15" y2="15" />
+                </svg>
               </button>
             ) : null}
           </div>
           <div className={styles.botonesFiltro}>
             <Button
               onClick={onAddJuego}
-              size="sm"
               className={styles.accionPrincipal}
+              size="sm"
             >
               <Plus size={16} className={styles.iconoBotonMediano} />
               Agregar juego

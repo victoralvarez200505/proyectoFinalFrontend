@@ -1,11 +1,8 @@
-import type { ChangeEvent } from "react";
 import {
   Gamepad2,
   Plus,
   Loader2,
   AlertCircle,
-  Search,
-  XCircle,
   WifiOff,
   Star,
   Clock,
@@ -30,15 +27,15 @@ interface SeccionPrincipalProps {
   isLoading: boolean;
   error: string | null;
   juegos: Juego[];
-  terminoBusqueda: string;
-  placeholderBusqueda: string;
+  // terminoBusqueda: string;
+  // placeholderBusqueda: string;
   textoSinResultados: string;
   hayBusquedaActiva: boolean;
   modoOffline: boolean;
   onAddJuego: () => void;
   onSelectJuego?: (juego: Juego) => void;
-  onSearchChange: (valor: string) => void;
-  onClearBusqueda: () => void;
+  // onSearchChange: (valor: string) => void;
+  // onClearBusqueda: () => void;
   limiteFavoritosAlcanzado: boolean;
   limitePendientesAlcanzado: boolean;
   mensajeLimiteFavoritos: string;
@@ -53,15 +50,15 @@ export const SeccionPrincipal = ({
   isLoading,
   error,
   juegos,
-  terminoBusqueda,
-  placeholderBusqueda,
+  // terminoBusqueda,
+  // placeholderBusqueda,
   textoSinResultados,
   hayBusquedaActiva,
   modoOffline,
   onAddJuego,
   onSelectJuego,
-  onSearchChange,
-  onClearBusqueda,
+  // onSearchChange,
+  // onClearBusqueda,
   limiteFavoritosAlcanzado,
   limitePendientesAlcanzado,
   mensajeLimiteFavoritos,
@@ -119,9 +116,9 @@ export const SeccionPrincipal = ({
       })
     : "";
 
-  const handleBusquedaChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onSearchChange(event.target.value);
-  };
+  // const handleBusquedaChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   onSearchChange(event.target.value);
+  // };
 
   const textoConteo = hayBusquedaActiva ? totalFiltrados : juegosTotales;
   const etiquetaConteo =
@@ -160,35 +157,12 @@ export const SeccionPrincipal = ({
           </Button>
         </div>
 
-        <div className={styles.portadaBuscador}>
-          <div className={styles.portadaCampoBusqueda}>
-            <Search size={18} className={styles.iconoBusquedaPortada} />
-            <input
-              type="search"
-              value={terminoBusqueda}
-              onChange={handleBusquedaChange}
-              placeholder={placeholderBusqueda}
-              className={styles.entradaBusquedaPortada}
-              aria-label="Buscar en la biblioteca"
-            />
-            {terminoBusqueda ? (
-              <button
-                type="button"
-                className={styles.botonLimpiarBusqueda}
-                onClick={onClearBusqueda}
-                aria-label="Limpiar búsqueda"
-              >
-                <XCircle size={18} />
-              </button>
-            ) : null}
+        {modoOffline ? (
+          <div className={styles.portadaAvisoOffline}>
+            <WifiOff size={18} />
+            <span>{mensajeModoOffline}</span>
           </div>
-          {modoOffline ? (
-            <div className={styles.portadaAvisoOffline}>
-              <WifiOff size={18} />
-              <span>{mensajeModoOffline}</span>
-            </div>
-          ) : null}
-        </div>
+        ) : null}
 
         <div className={styles.portadaMensajes}>
           {error ? (

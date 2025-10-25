@@ -1,7 +1,7 @@
 .card {
   --game-card-surface: hsl(234 32% 18%);
   --game-card-surface-alt: hsl(236 32% 12%);
-  --game-card-border: var(--color-borde);
+  --game-card-border: var(--color-border);
   --game-card-shadow: 0 0 0 1px hsl(236 42% 38% / 0.45),
     6px 6px 0 hsl(240 58% 8%);
   --game-card-text-soft: hsl(232 24% 78%);
@@ -13,11 +13,16 @@
   flex-direction: column;
   width: min(100%, 360px);
   min-height: clamp(320px, 48vw, 360px);
+  @media (max-width: 640px) {
+    .card {
+      width: min(100%, 320px);
+    }
+  }
   justify-self: center;
   align-self: stretch;
   margin-inline: auto;
   border-radius: var(--game-card-radius);
-  border: var(--ancho-borde-pixel) solid var(--game-card-border);
+  border: var(--pixel-border-width) solid var(--game-card-border);
   background: linear-gradient(
     145deg,
     var(--game-card-surface),
@@ -25,8 +30,8 @@
   );
   box-shadow: var(--game-card-shadow);
   overflow: hidden;
-  transition: transform var(--transicion-base),
-    box-shadow var(--transicion-base), border-color var(--transicion-base);
+  transition: transform var(--transition-base),
+    box-shadow var(--transition-base), border-color var(--transition-base);
 }
 
 .card::after {
@@ -90,6 +95,7 @@
   flex: 1;
   padding: 1.35rem 1.35rem 1rem;
   gap: 1.1rem;
+  /* legacy: no overflow hidden en body */
 }
 
 .content {
@@ -107,19 +113,17 @@
 
 .title {
   margin: 0;
-  font-family: var(--fuente-titulos);
+  font-family: var(--font-family-display);
   font-size: clamp(1.22rem, 2vw, 1.55rem);
   font-weight: 400;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-texto);
+  color: var(--color-foreground);
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
   line-clamp: 2;
+  -webkit-line-clamp: 2;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
   text-shadow: 2px 2px 0 hsl(240 58% 8% / 0.7);
 }
 
@@ -186,7 +190,7 @@
 }
 
 .descriptionExpanded {
-  max-height: none;
+  max-height: 10rem;
 }
 
 .toggleDescription {
@@ -235,7 +239,7 @@
   align-items: center;
   gap: 0.4rem;
   font-size: 0.88rem;
-  color: var(--color-texto);
+  color: var(--color-foreground);
   font-weight: 600;
   overflow-wrap: anywhere;
 }
@@ -278,10 +282,10 @@
   min-width: 0;
   width: 100%;
   padding: 0.65rem 1.05rem !important;
-  border-radius: var(--radio-pequeno) !important;
-  border: var(--ancho-borde-pixel) solid var(--color-borde) !important;
-  background: var(--color-campo) !important;
-  color: var(--color-texto) !important;
+  border-radius: var(--radius-sm) !important;
+  border: var(--pixel-border-width) solid var(--color-border) !important;
+  background: var(--color-input) !important;
+  color: var(--color-foreground) !important;
   font-size: 0.82rem !important;
   letter-spacing: 0.1em;
   box-shadow: 3px 3px 0 hsl(240 58% 8% / 0.7) !important;

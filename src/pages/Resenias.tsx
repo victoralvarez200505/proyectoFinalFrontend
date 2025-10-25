@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router";
-import { ArrowLeft, Loader2, Search } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import styles from "@/styles/pages/Resenias.module.css";
@@ -18,6 +18,7 @@ import {
 import { Button } from "@/components/ui/general/boton";
 import { ReseniaCard } from "@/components/Resenias/ReseniaCard";
 import { GameCard } from "@/components/Inicio/GameCard";
+import { BarraBusqueda } from "@/components/ui/general/BarraBusqueda";
 import { Input } from "@/components/ui/general/input";
 import { Select } from "@/components/ui/general/select";
 import { Switch } from "@/components/ui/general/switch";
@@ -502,33 +503,12 @@ const Resenias = () => {
                   </div>
 
                   <div className={styles.filaFiltro}>
-                    <div className={styles.envolturaBusqueda}>
-                      <Search
-                        className={styles.iconoBusqueda}
-                        size={16}
-                        aria-hidden="true"
-                      />
-                      <Input
-                        value={terminoBusqueda}
-                        onChange={(evento) =>
-                          setTerminoBusqueda(evento.target.value)
-                        }
-                        placeholder="Buscar por comentario, dificultad, horas..."
-                        className={styles.entradaBusqueda}
-                        aria-label="Buscar reseñas"
-                      />
-                    </div>
-                    {hayBusquedaActiva && (
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setTerminoBusqueda("")}
-                        className={styles.botonFiltro}
-                      >
-                        Limpiar
-                      </Button>
-                    )}
+                    <BarraBusqueda
+                      value={terminoBusqueda}
+                      onChange={setTerminoBusqueda}
+                      placeholder="Buscar por comentario, dificultad, horas..."
+                      className={styles.envolturaBusqueda}
+                    />
                   </div>
 
                   {cargandoResenias ? (
@@ -536,10 +516,12 @@ const Resenias = () => {
                       Cargando reseñas...
                     </div>
                   ) : reseniasFiltradas.length === 0 ? (
-                    <div className={styles.cajaMarcador}>
-                      {hayBusquedaActiva
-                        ? "No se encontraron reseñas que coincidan con tu búsqueda."
-                        : 'Aún no hay reseñas registradas. Usa "Agregar reseña" para compartir la primera experiencia.'}
+                    <div className={styles.tarjetaResenias} style={{marginTop: 0, padding: '2.5rem 2rem'}}>
+                      <div className={styles.cajaMarcador}>
+                        {hayBusquedaActiva
+                          ? "No se encontraron reseñas que coincidan con tu búsqueda."
+                          : 'Aún no hay reseñas registradas. Usa "Agregar reseña" para compartir la primera experiencia.'}
+                      </div>
                     </div>
                   ) : (
                     <div className={styles.listaResenias}>
@@ -629,7 +611,7 @@ const Resenias = () => {
                 <Input
                   id="horas"
                   value={formData.horasJugadas}
-                  onChange={(evento) =>
+                  onChange={(evento: React.ChangeEvent<HTMLInputElement>) =>
                     manejarCambioFormulario("horasJugadas", evento.target.value)
                   }
                   placeholder="Ej. 25"

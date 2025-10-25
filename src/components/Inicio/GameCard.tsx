@@ -62,7 +62,7 @@ export const GameCard = ({
   const estadoJuego = juego.completado ? "Completado" : "En progreso";
   const [mostrarDescripcionCompleta, setMostrarDescripcionCompleta] =
     useState(false);
-  const descripcionTieneMasContenido = descripcion.length > 220;
+  const descripcionTieneMasContenido = descripcion.length > 300;
 
   useEffect(() => {
     setMostrarDescripcionCompleta(false);
