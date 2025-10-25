@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router";
-import { ArrowLeft, Loader2, Pencil, Search, Star, Trash2 } from "lucide-react";
+import { ArrowLeft, Loader2, Search } from "lucide-react";
 import { toast } from "sonner";
 
 import styles from "@/styles/pages/Resenias.module.css";
@@ -16,7 +16,7 @@ import {
   type ReseniaPayload,
 } from "@/services/api";
 import { Button } from "@/components/ui/general/boton";
-import { Badge } from "@/components/ui/general/badge";
+import { ReseniaCard } from "@/components/Resenias/ReseniaCard";
 import { GameCard } from "@/components/Inicio/GameCard";
 import { Input } from "@/components/ui/general/input";
 import { Select } from "@/components/ui/general/select";
@@ -543,98 +543,16 @@ const Resenias = () => {
                     </div>
                   ) : (
                     <div className={styles.listaResenias}>
-                      {reseniasFiltradas.map((resenia, indice) => {
-                        const comentario = resenia.texto?.trim();
-
-                        return (
-                          <article
-                            key={resenia.id}
-                            className={styles.tarjetaResenia}
-                          >
-                            <div className={styles.cabeceraResenia}>
-                              <div className={styles.metaResenia}>
-                                <div className={styles.estrellasResenia}>
-                                  {Array.from(
-                                    { length: 5 },
-                                    (_, estrella) => estrella + 1
-                                  ).map((valor) => (
-                                    <Star
-                                      key={valor}
-                                      className={cn(
-                                        styles.iconoEstrellaPequena,
-                                        valor <= (resenia.puntuacion ?? 0) &&
-                                          styles.iconoEstrellaPequenaActiva
-                                      )}
-                                      aria-hidden="true"
-                                    />
-                                  ))}
-                                </div>
-                                <span className={styles.indiceResenia}>
-                                  #{indice + 1}
-                                </span>
-                              </div>
-                              <div className={styles.fechaResenia}>
-                                {formatoFecha(
-                                  resenia.fechaActualizacion ??
-                                    resenia.fechaCreacion
-                                )}
-                              </div>
-                            </div>
-
-                            <p className={styles.contenidoResenia}>
-                              {comentario && comentario.length > 0
-                                ? comentario
-                                : "Esta reseña no incluye comentario, pero sí aporta valoración y datos."}
-                            </p>
-
-                            <div className={styles.etiquetasResenia}>
-                              <span className={styles.etiquetaResenia}>
-                                {resenia.dificultad || "Sin dificultad"}
-                              </span>
-                              <span className={styles.etiquetaResenia}>
-                                {resenia.horasJugadas !== null &&
-                                resenia.horasJugadas !== undefined
-                                  ? `${resenia.horasJugadas} h`
-                                  : "Horas no registradas"}
-                              </span>
-                              <Badge
-                                className={cn(
-                                  styles.insigniaRecomendacion,
-                                  resenia.recomendaria
-                                    ? styles.recomendacionPositiva
-                                    : styles.recomendacionNegativa
-                                )}
-                                variant="outline"
-                              >
-                                {resenia.recomendaria
-                                  ? "Recomendado"
-                                  : "No recomendado"}
-                              </Badge>
-                            </div>
-
-                            <div className={styles.accionesResenia}>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => abrirFormulario(resenia)}
-                                className={styles.botonContorno}
-                              >
-                                <Pencil size={14} aria-hidden="true" />
-                                Editar
-                              </Button>
-                              <Button
-                                variant="destructive"
-                                size="sm"
-                                onClick={() => manejarEliminar(resenia)}
-                                className={styles.botonDestructivo}
-                              >
-                                <Trash2 size={14} aria-hidden="true" />
-                                Eliminar
-                              </Button>
-                            </div>
-                          </article>
-                        );
-                      })}
+                      {reseniasFiltradas.map((resenia, indice) => (
+                        <ReseniaCard
+                          key={resenia.id}
+                          resenia={resenia}
+                          indice={indice}
+                          onEditar={abrirFormulario}
+                          onEliminar={manejarEliminar}
+                          formatoFecha={formatoFecha}
+                        />
+                      ))}
                     </div>
                   )}
                 </div>
