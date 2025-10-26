@@ -238,7 +238,10 @@ export const GameCarousel = ({
         >
           {orderedGames.map((game, index) => {
             const tieneImagen = Boolean(game.imagen);
-            const inicial = game.nombre.charAt(0).toUpperCase();
+            const inicial =
+              game.nombre && typeof game.nombre === "string"
+                ? game.nombre.charAt(0).toUpperCase()
+                : "";
             const completado = Boolean(game.completado);
             const isActive = index === currentIndex;
 

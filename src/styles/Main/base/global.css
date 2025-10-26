@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Work+Sans:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Press+Start+2P&display=swap");
 @import "./tema.css";
 @import "./normalizar.css";
 
@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: var(--fuente-base);
+  font-family: "Inter", var(--fuente-base);
   background-color: var(--color-fondo);
   color: var(--color-texto);
   min-height: 100vh;
@@ -35,7 +35,7 @@ button,
 input,
 textarea,
 select {
-  font-family: var(--fuente-base);
+  font-family: "Inter", var(--fuente-base);
 }
 
 a:hover {
@@ -53,12 +53,11 @@ strong {
 
 .titulo-seccion {
   font-family: var(--fuente-titulos);
-  font-size: clamp(1.65rem, 2.5vw, 2.4rem);
+  font-size: clamp(1.5rem, 2.25vw, 2.25rem);
   font-weight: 400;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--color-texto);
-  text-shadow: -2px -2px 0 hsl(236 38% 6%), 2px 2px 0 hsl(280 72% 32% / 0.55);
 }
 
 .subtitulo-seccion {
@@ -105,7 +104,7 @@ strong {
   color: var(--color-texto);
   border-radius: var(--radio-pequeno);
   padding: 0.625rem 0.75rem;
-  box-shadow: 3px 3px 0 hsl(240 58% 8% / 0.7);
+  box-shadow: 2px 2px 0 hsl(240 58% 8% / 0.7);
   transition: transform var(--transicion-base),
     box-shadow var(--transicion-base), border-color var(--transicion-base);
 }
@@ -113,8 +112,8 @@ strong {
 .campo-entrada:focus {
   outline: none;
   border-color: var(--color-anillo);
-  transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0 hsl(240 58% 8%), 0 0 0 4px hsl(345 82% 60% / 0.28);
+  transform: translate(0, 0);
+  box-shadow: 3px 3px 0 hsl(240 58% 8%), 0 0 0 4px hsl(345 72% 55% / 0.28);
 }
 
 .insignia-base {
@@ -143,13 +142,13 @@ strong {
   mix-blend-mode: soft-light;
   background-image: repeating-linear-gradient(
       45deg,
-      hsl(0 0% 100% / 0.04),
-      hsl(0 0% 100% / 0.04) 6px,
-      transparent 6px,
-      transparent 12px
+      hsl(0 0% 100% / 0.02),
+      hsl(0 0% 100% / 0.02) 4px,
+      transparent 4px,
+      transparent 8px
     ),
-    radial-gradient(circle at 20% 20%, hsl(198 76% 32% / 0.35), transparent 55%);
-  opacity: 0.75;
+    radial-gradient(circle at 20% 20%, hsl(198 76% 32% / 0.25), transparent 45%);
+  opacity: 0.5;
   pointer-events: none;
 }
 
@@ -157,5 +156,5 @@ strong {
   font-family: var(--fuente-titulos);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  text-shadow: 3px 3px 0 hsl(240 58% 8% / 0.75);
+  text-shadow: 2px 2px 0 hsl(240 58% 8% / 0.75);
 }

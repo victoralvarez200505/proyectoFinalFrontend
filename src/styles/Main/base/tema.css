@@ -6,9 +6,9 @@
   --color-texto-tarjeta: hsl(45 100% 94%);
   --color-emergente: hsl(236 32% 12%);
   --color-texto-emergente: hsl(45 100% 94%);
-  --color-primario: hsl(345 82% 60%);
+  --color-primario: hsl(345 72% 55%);
   --color-texto-primario: hsl(0 0% 98%);
-  --color-secundario: hsl(198 76% 56%);
+  --color-secundario: hsl(198 66% 51%);
   --color-texto-secundario: hsl(198 100% 12%);
   --color-suave: hsl(233 30% 22%);
   --color-texto-suave: hsl(232 24% 80%);
@@ -18,23 +18,23 @@
   --color-texto-peligro: hsl(0 0% 98%);
   --color-borde: hsl(236 42% 38%);
   --color-campo: hsl(234 32% 18%);
-  --color-anillo: hsl(345 82% 60%);
+  --color-anillo: hsl(345 72% 55%);
   --radio-base: 0.6rem;
   --radio-pequeno: 0.45rem;
   --radio-grande: 0.9rem;
   --sombra-pixel-suave: 0 0 0 1px hsl(236 42% 38% / 0.45),
-    4px 4px 0 hsl(240 52% 12% / 0.75);
+    3px 3px 0 hsl(240 52% 12% / 0.75);
   --sombra-pixel-fuerte: 0 0 0 1px hsl(236 42% 38% / 0.55),
-    6px 6px 0 hsl(240 58% 10% / 0.85), 0 18px 36px hsl(228 80% 8% / 0.45);
-  --sombra-pixel-resaltada: 0 0 0 1px hsl(345 82% 48% / 0.6),
-    6px 6px 0 hsl(278 72% 34% / 0.75);
+    4px 4px 0 hsl(240 58% 10% / 0.85), 0 12px 24px hsl(228 80% 8% / 0.45);
+  --sombra-pixel-resaltada: 0 0 0 1px hsl(345 72% 48% / 0.6),
+    4px 4px 0 hsl(278 72% 34% / 0.75);
   --ancho-borde-pixel: 3px;
   --gradiente-amanecer: linear-gradient(
     135deg,
-    hsl(278 62% 32%),
-    hsl(345 82% 46%)
+    hsl(278 52% 28%),
+    hsl(345 72% 41%)
   );
-  --gradiente-alba: linear-gradient(135deg, hsl(200 72% 36%), hsl(160 68% 32%));
+  --gradiente-alba: linear-gradient(135deg, hsl(200 62% 31%), hsl(160 58% 27%));
   --gradiente-tarjeta: linear-gradient(
     135deg,
     hsl(235 30% 18%),
