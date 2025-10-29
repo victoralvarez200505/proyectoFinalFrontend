@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { useGameStore } from "@/hooks/useGameStore.ts";
 import { GENEROS } from "@/lib/generos";
-import type { Juego } from "@/tipos/juego";
+import type { Juego } from "@/types/juego";
 import { bibliotecaConfig, uiConfig } from "@/config";
 import { reemplazarVariables } from "@/lib/utils";
 

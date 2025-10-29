@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 import styles from "@/styles/pages/Resenias.module.css";
 import { useGameStore } from "@/hooks/useGameStore";
-import type { Juego } from "@/tipos/juego";
+import type { Juego } from "@/types/juego";
 import {
   createResenia,
   deleteResenia,
@@ -516,7 +516,10 @@ const Resenias = () => {
                       Cargando reseñas...
                     </div>
                   ) : reseniasFiltradas.length === 0 ? (
-                    <div className={styles.tarjetaResenias} style={{marginTop: 0, padding: '2.5rem 2rem'}}>
+                    <div
+                      className={styles.tarjetaResenias}
+                      style={{ marginTop: 0, padding: "2.5rem 2rem" }}
+                    >
                       <div className={styles.cajaMarcador}>
                         {hayBusquedaActiva
                           ? "No se encontraron reseñas que coincidan con tu búsqueda."

@@ -1,5 +1,5 @@
 import { bibliotecaConfig } from "@/config";
-import { GENEROS_BASE } from "@/tipos/juego";
+import { GENEROS_BASE } from "@/types/juego";
 
 const generosDesdeConfig = bibliotecaConfig.generos.length
   ? Array.from(new Set(bibliotecaConfig.generos))

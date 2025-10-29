@@ -11,7 +11,7 @@ import {
   Store,
   Tag,
 } from "lucide-react";
-import type { Juego } from "@/tipos/juego";
+import type { Juego } from "@/types/juego";
 import { CardBase } from "@/components/ui/general/CardBase";
 import { Button } from "@/components/ui/general/boton";
 import { Badge } from "@/components/ui/general/badge";

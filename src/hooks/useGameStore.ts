@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { Juego } from "@/tipos/juego";
+import type { Juego } from "@/types/juego";
 import { toast } from "sonner";
 import * as api from "@/services/api";
 import { bibliotecaConfig, uiConfig } from "@/config";

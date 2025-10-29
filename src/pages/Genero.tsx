@@ -4,7 +4,7 @@ import { AlertCircle, ArrowLeft, Loader2, Plus, Search } from "lucide-react";
 
 import styles from "@/styles/pages/Genero.module.css";
 import { useGameStore } from "@/hooks/useGameStore";
-import type { Juego } from "@/tipos/juego";
+import type { Juego } from "@/types/juego";
 import { Button } from "@/components/ui/general/boton";
 import { Input } from "@/components/ui/general/input";
 import { GameCard } from "@/components/Inicio/GameCard";

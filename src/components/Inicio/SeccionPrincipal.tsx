@@ -7,7 +7,7 @@ import {
   Star,
   Clock,
 } from "lucide-react";
-import type { Juego } from "@/tipos/juego";
+import type { Juego } from "@/types/juego";
 import { Button } from "@/components/ui/general/boton";
 import {
   Alert,

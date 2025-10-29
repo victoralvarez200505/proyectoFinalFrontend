@@ -13,7 +13,7 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@/components/ui/general/alertas";
-import type { Juego } from "@/tipos/juego";
+import type { Juego } from "@/types/juego";
 import styles from "@/styles/pages/Inicio.module.css";
 import { apiConfig, uiConfig, bibliotecaConfig } from "@/config";
 import { cn, reemplazarVariables } from "@/lib/utils";

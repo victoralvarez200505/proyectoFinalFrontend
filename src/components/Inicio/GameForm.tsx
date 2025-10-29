@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import type { Juego } from "@/tipos/juego";
+import type { Juego } from "@/types/juego";
 import { GENEROS } from "@/lib/generos";
 import { Button } from "@/components/ui/general/boton";
 import { Input } from "@/components/ui/general/input";

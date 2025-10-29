@@ -1,4 +1,4 @@
-import type { Juego } from "@/tipos/juego";
+import type { Juego } from "@/types/juego";
 import { apiConfig, bibliotecaConfig, integracionesConfig } from "@/config";
 
 const construirUrlApiPorDefecto = (): string => {

@@ -1,5 +1,5 @@
-import type { Juego } from "@/tipos/juego";
-import { GENEROS_BASE } from "@/tipos/juego";
+import type { Juego } from "@/types/juego";
+import { GENEROS_BASE } from "@/types/juego";
 import rawSettings from "./appSettings.json" with { type: "json" };
 
 type StringRecord = Record<string, string>;

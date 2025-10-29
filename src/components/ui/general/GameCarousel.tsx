@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { FocusEvent, KeyboardEvent } from "react";
 import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import styles from "@/styles/components/GameCarousel.module.css";
-import type { Juego } from "@/tipos/juego";
+import type { Juego } from "@/types/juego";
 
 interface GameCarouselProps {
   games: Juego[];
