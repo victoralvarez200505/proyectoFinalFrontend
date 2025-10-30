@@ -1,20 +1,7 @@
-import { useEffect, useState } from "react";
-import {
-  Pencil,
-  Trash2,
-  Calendar,
-  Monitor,
-  CheckCircle2,
-  MessageSquareHeart,
-  Building2,
-  CalendarClock,
-  Store,
-  Tag,
-} from "lucide-react";
+import { Pencil, Trash2, MessageSquareHeart } from "lucide-react";
 import type { Juego } from "@/types/juego";
-import { CardBase } from "@/components/ui/general/CardBase";
 import { Button } from "@/components/ui/general/boton";
-import { Badge } from "@/components/ui/general/badge";
+// import { Badge } from "@/components/ui/general/badge";
 import { cn } from "@/lib/utils";
 import styles from "@/styles/components/GameCard.module.css";
 import * as Tooltip from "@radix-ui/react-tooltip";
@@ -61,56 +48,10 @@ export const GameCard = ({
   const lanzamiento = juego.año ?? "—";
   const fechaAgregado = fechaCreacionFormateada ?? "—";
   const estadoJuego = juego.completado ? "Completado" : "En progreso";
-  const [mostrarDescripcionCompleta, setMostrarDescripcionCompleta] =
-    useState(false);
   const descripcionLimite = 180;
   const descripcionTieneMasContenido = descripcion.length > descripcionLimite;
 
-  useEffect(() => {
-    setMostrarDescripcionCompleta(false);
-  }, [juego.id]);
-
-  const infoBase = [
-    {
-      etiqueta: "Estado",
-      valor: estadoJuego,
-      icono: CheckCircle2,
-    },
-    {
-      etiqueta: "Género",
-      valor: genero,
-      icono: Tag,
-    },
-    {
-      etiqueta: "Plataforma",
-      valor: plataforma,
-      icono: Monitor,
-    },
-    {
-      etiqueta: "Tienda",
-      valor: tienda,
-      icono: Store,
-    },
-    {
-      etiqueta: "Desarrollador",
-      valor: desarrollador,
-      icono: Building2,
-    },
-    {
-      etiqueta: "Lanzamiento",
-      valor: lanzamiento,
-      icono: Calendar,
-    },
-    {
-      etiqueta: "Agregado",
-      valor: fechaAgregado,
-      icono: CalendarClock,
-    },
-  ];
-
-  const infoFiltrada = infoBase.filter((item) => item.valor !== "—");
   const descripcionId = `descripcion-${juego.id}`;
-  const tieneAcciones = Boolean(onManageReviews || onEdit || onDelete);
 
   return (
     <div className={styles.card}>
