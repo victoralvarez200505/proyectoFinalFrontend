@@ -3,7 +3,7 @@ import { SeccionPrincipal } from "@/components/Inicio/SeccionPrincipal";
 import { ListaJuegos } from "@/components/Inicio/ListaJuegos";
 import { ResumenGeneros } from "@/components/Inicio/ResumenGeneros";
 import { GameForm } from "@/components/Inicio/GameForm";
-import { usePaginaInicio } from "@/hooks/usarPaginaInicio";
+import { usePaginaInicio } from "@/hooks/usePaginaInicio";
 import { apiConfig, integracionesConfig } from "@/config";
 
 const Inicio = () => {
@@ -23,7 +23,7 @@ const Inicio = () => {
     cambiarEstadoFormulario,
     terminoBusqueda,
     hayBusquedaActiva,
-    placeholderBusqueda,
+
     textoSinResultados,
     establecerTerminoBusqueda,
     limpiarBusqueda,
@@ -61,14 +61,10 @@ const Inicio = () => {
           error={error}
           juegos={juegosConfigurados}
           totalFiltrados={totalFiltrados}
-          terminoBusqueda={terminoBusqueda}
-          placeholderBusqueda={placeholderBusqueda}
           textoSinResultados={textoSinResultados}
           hayBusquedaActiva={hayBusquedaActiva}
           onAddJuego={abrirFormulario}
           onSelectJuego={puedeGestionarResenias ? gestionarResenias : undefined}
-          onSearchChange={establecerTerminoBusqueda}
-          onClearBusqueda={limpiarBusqueda}
           modoOffline={modoOffline}
           limiteFavoritosAlcanzado={limiteFavoritosAlcanzado}
           limitePendientesAlcanzado={limitePendientesAlcanzado}
@@ -86,7 +82,6 @@ const Inicio = () => {
           error={error}
           hayBusquedaActiva={hayBusquedaActiva}
           terminoBusqueda={terminoBusqueda}
-          placeholderBusqueda={placeholderBusqueda}
           textoSinResultados={textoSinResultados}
           paginaActual={paginaActual}
           totalPaginas={totalPaginas}

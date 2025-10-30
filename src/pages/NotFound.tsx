@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router";
-import styles from "@/styles/pages/PaginaNoEncontrada.module.css";
+import styles from "@/styles/pages/NotFound.module.css";
 
 const PaginaNoEncontrada = () => {
   const location = useLocation();

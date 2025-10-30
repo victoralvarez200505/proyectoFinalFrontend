@@ -20,7 +20,7 @@ export const ReseniaCard = ({
   onEliminar,
   formatoFecha,
 }: ReseniaCardProps) => {
-  const comentario = resenia.texto?.trim();
+  const comentario = resenia.contenido?.trim();
   return (
     <article className={styles.tarjetaResenia}>
       <div className={styles.cabeceraResenia}>
@@ -32,7 +32,7 @@ export const ReseniaCard = ({
                   key={valor}
                   className={cn(
                     styles.iconoEstrellaPequena,
-                    valor <= (resenia.puntuacion ?? 0) &&
+                    valor <= (resenia.calificacion ?? 0) &&
                       styles.iconoEstrellaPequenaActiva
                   )}
                   aria-hidden="true"

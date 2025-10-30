@@ -39,3 +39,9 @@
   pointer-events: none;
   color: hsl(232 24% 78%);
 }
+
+/* Mejora contraste de las opciones del menú desplegable */
+select option {
+  background-color: var(--color-campo, #23263a);
+  color: var(--color-texto, #f3f3f3);
+}

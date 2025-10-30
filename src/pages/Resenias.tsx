@@ -41,16 +41,16 @@ const dificultades = [
 ] as const;
 
 type FormState = {
-  puntuacion: number | null;
-  texto: string;
+  calificacion: number | null;
+  contenido: string;
   horasJugadas: string;
   dificultad: string;
   recomendaria: boolean;
 };
 
 const crearEstadoInicial = (): FormState => ({
-  puntuacion: 3,
-  texto: "",
+  calificacion: 3,
+  contenido: "",
   horasJugadas: "",
   dificultad: "Normal",
   recomendaria: true,
@@ -154,6 +154,7 @@ const Resenias = () => {
         if (!activo) {
           return;
         }
+        console.log("Resenias recibidas del backend:", datos);
         setResenias(datos);
       } catch (error) {
         if (!activo) {
@@ -219,7 +220,7 @@ const Resenias = () => {
     const termino = normalizarBusqueda(terminoBusqueda);
 
     return reseniasOrdenadas.filter((resenia) => {
-      const comentario = normalizarBusqueda(resenia.texto ?? "");
+      const comentario = normalizarBusqueda(resenia.contenido ?? "");
       const dificultad = normalizarBusqueda(resenia.dificultad ?? "");
       const recomendacion = resenia.recomendaria
         ? "recomendado"
@@ -244,7 +245,7 @@ const Resenias = () => {
     }
 
     const suma = resenias.reduce((total, resenia) => {
-      return total + (resenia.puntuacion ?? 0);
+      return total + (resenia.calificacion ?? 0);
     }, 0);
 
     const promedio = suma / resenias.length;
@@ -271,8 +272,8 @@ const Resenias = () => {
     if (resenia) {
       setReseniaEditando(resenia);
       setFormData({
-        puntuacion: resenia.puntuacion,
-        texto: resenia.texto,
+        calificacion: resenia.calificacion,
+        contenido: resenia.contenido,
         horasJugadas:
           resenia.horasJugadas === null || resenia.horasJugadas === undefined
             ? ""
@@ -294,12 +295,12 @@ const Resenias = () => {
       return;
     }
 
-    if (formData.puntuacion === null) {
+    if (formData.calificacion === null) {
       toast.error("Selecciona una puntuación entre 1 y 5 estrellas");
       return;
     }
 
-    const comentario = formData.texto.trim();
+    const comentario = formData.contenido.trim();
 
     if (comentario === "") {
       toast.error("Agrega algunos detalles sobre tu experiencia");
@@ -326,29 +327,30 @@ const Resenias = () => {
 
     const payload: ReseniaPayload = {
       juegoId: juegoActual.id,
-      puntuacion: formData.puntuacion,
-      texto: comentario,
+      contenido: comentario,
+      calificacion: formData.calificacion,
+      autor: "Anónimo",
       horasJugadas: horasNormalizadas,
       dificultad: formData.dificultad,
       recomendaria: formData.recomendaria,
     };
+    console.log("Payload reseña:", payload);
 
     setGuardando(true);
 
     try {
       if (reseniaEditando) {
-        const actualizada = await updateResenia(reseniaEditando.id, payload);
-
-        setResenias((prev) =>
-          prev.map((resenia) =>
-            resenia.id === reseniaEditando.id ? actualizada : resenia
-          )
-        );
+        await updateResenia(reseniaEditando.id, payload);
         toast.success("Reseña actualizada correctamente");
       } else {
-        const creada = await createResenia(payload);
-        setResenias((prev) => [creada, ...prev]);
+        await createResenia(payload);
         toast.success("Reseña creada correctamente");
+      }
+
+      // Refrescar reseñas desde el backend
+      if (juegoActual) {
+        const datos = await getReseniasPorJuego(juegoActual.id);
+        setResenias(datos);
       }
 
       setFormularioAbierto(false);
@@ -378,10 +380,12 @@ const Resenias = () => {
 
     try {
       await deleteResenia(resenia.id);
-      setResenias((prev) =>
-        prev.filter((registro) => registro.id !== resenia.id)
-      );
       toast.success("Reseña eliminada");
+      // Refrescar reseñas desde el backend
+      if (juegoActual) {
+        const datos = await getReseniasPorJuego(juegoActual.id);
+        setResenias(datos);
+      }
     } catch (error) {
       const mensaje =
         error instanceof Error
@@ -573,12 +577,12 @@ const Resenias = () => {
                       key={valor}
                       type="button"
                       onClick={() =>
-                        manejarCambioFormulario("puntuacion", valor)
+                        manejarCambioFormulario("calificacion", valor)
                       }
                       className={cn(
                         styles.botonEstrellaDialogo,
-                        formData.puntuacion !== null &&
-                          valor <= formData.puntuacion &&
+                        formData.calificacion !== null &&
+                          valor <= formData.calificacion &&
                           styles.botonEstrellaDialogoActiva
                       )}
                       aria-label={`Asignar puntuación de ${valor}`}
@@ -596,9 +600,9 @@ const Resenias = () => {
               </label>
               <Textarea
                 id="comentario"
-                value={formData.texto}
+                value={formData.contenido}
                 onChange={(evento) =>
-                  manejarCambioFormulario("texto", evento.target.value)
+                  manejarCambioFormulario("contenido", evento.target.value)
                 }
                 placeholder="Describe tu experiencia, los puntos fuertes y lo que mejorarías"
                 minLength={10}

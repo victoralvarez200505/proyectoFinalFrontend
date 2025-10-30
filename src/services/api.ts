@@ -146,19 +146,27 @@ type JsonObject = Record<string, unknown>;
 export interface Resenia {
   id: string;
   juegoId: string;
-  puntuacion: number | null;
-  texto: string;
+  contenido: string;
+  calificacion: number;
+  autor: string;
+  dificultad: string;
+  recomendaria: boolean;
+  horasJugadas: number;
+  fechaCreacion: string | null;
+  fechaActualizacion: string | null;
+  juegoNombre?: string;
+  juegoGenero?: string;
+}
+
+export type ReseniaPayload = {
+  juegoId: string;
+  contenido: string;
+  calificacion: number | null;
+  autor: string;
   horasJugadas: number | null;
   dificultad: string;
   recomendaria: boolean;
-  fechaCreacion: string | null;
-  fechaActualizacion: string | null;
-}
-
-export type ReseniaPayload = Omit<
-  Resenia,
-  "id" | "fechaCreacion" | "fechaActualizacion"
->;
+};
 
 const readJsonBody = async (response: Response): Promise<unknown> => {
   const text = await response.text();
@@ -227,17 +235,26 @@ const ensureSuccess = async (response: Response, fallback: string) => {
 };
 
 const normalizarListadoResenias = (payload: unknown): Resenia[] => {
+  const mapId = (r: any) => {
+    if (r && !r.id && r._id) {
+      return { ...r, id: r._id };
+    }
+    return r;
+  };
+
   if (Array.isArray(payload)) {
-    return payload as Resenia[];
+    return payload.map(mapId) as Resenia[];
   }
 
   if (payload && typeof payload === "object") {
     const registro = payload as JsonObject;
-    const coleccion =
-      (registro.resenias as unknown) ?? (registro["resenias"] as unknown);
-
-    if (Array.isArray(coleccion)) {
-      return coleccion as Resenia[];
+    // Plural
+    if (Array.isArray(registro.resenias)) {
+      return (registro.resenias as any[]).map(mapId) as Resenia[];
+    }
+    // Singular
+    if (registro.resenia && typeof registro.resenia === "object") {
+      return [mapId(registro.resenia) as Resenia];
     }
   }
 
