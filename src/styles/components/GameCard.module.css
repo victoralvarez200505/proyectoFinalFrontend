@@ -1,3 +1,20 @@
+.tooltipContent {
+  background: rgba(24, 24, 32, 0.98);
+  color: var(--game-card-text-soft);
+  border-radius: 0.7rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
+  padding: 1.1rem 1.3rem;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 340px;
+  min-width: 220px;
+  white-space: pre-line;
+  z-index: 99;
+}
+
+.tooltipArrow {
+  fill: rgba(24, 24, 32, 0.98);
+}
 /* Si las tarjetas están en un grid/flex, sugerir clase para el contenedor */
 .gameCardGrid,
 .gameCardRow,
@@ -49,7 +66,8 @@
   padding: 1.1rem 1.2rem;
   min-height: 5.2rem;
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: stretch;
   position: relative;
 }
 .infoGrid {
@@ -309,12 +327,13 @@
   color: var(--game-card-text-soft);
   font-size: 1.05rem;
   line-height: 1.7;
-  display: block;
-  max-height: 5.2rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: normal;
   position: relative;
+  white-space: normal;
 }
 
 .descriptionExpanded {
@@ -329,9 +348,9 @@
 }
 
 .toggleDescription {
-  background: none;
+  background: rgba(24, 24, 32, 0.92);
   border: none;
-  padding: 0;
+  border-radius: 0.4rem;
   font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -339,13 +358,11 @@
   color: var(--color-primario);
   cursor: pointer;
   transition: color var(--transicion-base), transform var(--transicion-base);
-  position: absolute;
-  right: 0.5rem;
-  bottom: 0.5rem;
-  background: rgba(24, 24, 32, 0.92);
-  border-radius: 0.4rem;
+  align-self: flex-end;
+  margin-top: 0.5rem;
   padding: 0.2rem 0.8rem;
   z-index: 3;
+  position: static;
 }
 
 .toggleDescription:hover {

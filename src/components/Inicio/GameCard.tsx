@@ -17,17 +17,18 @@ import { Button } from "@/components/ui/general/boton";
 import { Badge } from "@/components/ui/general/badge";
 import { cn } from "@/lib/utils";
 import styles from "@/styles/components/GameCard.module.css";
+import * as Tooltip from "@radix-ui/react-tooltip";
 
 const formateadorFecha = new Intl.DateTimeFormat("es-ES", {
   dateStyle: "medium",
 });
 
-interface GameCardProps {
+type GameCardProps = {
   juego: Juego;
   onEdit?: (juego: Juego) => void;
   onDelete?: (id: string) => void;
   onManageReviews?: (juego: Juego) => void;
-}
+};
 
 export const GameCard = ({
   juego,
@@ -131,37 +132,38 @@ export const GameCard = ({
       </div>
       {/* Sinopsis */}
       <div className={styles.sinopsisBox}>
-        <div style={{ position: "relative", minHeight: "4.2rem" }}>
-          <p
-            className={cn(
-              styles.description,
-              mostrarDescripcionCompleta && styles.descriptionExpanded
-            )}
-            id={descripcionId}
-          >
-            {mostrarDescripcionCompleta
-              ? descripcion
-              : descripcion.slice(0, descripcionLimite) +
-                (descripcionTieneMasContenido ? "..." : "")}
-          </p>
-          {descripcionTieneMasContenido && (
-            <button
-              type="button"
-              className={styles.toggleDescription}
-              onClick={() => setMostrarDescripcionCompleta((prev) => !prev)}
-              aria-expanded={mostrarDescripcionCompleta ? "true" : "false"}
-              aria-controls={descripcionId}
-              tabIndex={0}
-              title={
-                mostrarDescripcionCompleta
-                  ? "Ocultar descripción"
-                  : "Mostrar descripción completa"
-              }
+        {descripcionTieneMasContenido ? (
+          <Tooltip.Root delayDuration={200}>
+            <Tooltip.Trigger asChild>
+              <p
+                className={styles.description}
+                id={descripcionId}
+                tabIndex={0}
+                style={{ cursor: "pointer" }}
+              >
+                {descripcion.slice(0, descripcionLimite)}
+                <span
+                  style={{ color: "var(--color-primario)", fontWeight: "bold" }}
+                >
+                  ...
+                </span>
+              </p>
+            </Tooltip.Trigger>
+            <Tooltip.Content
+              side="bottom"
+              align="start"
+              className={styles.tooltipContent}
+              sideOffset={8}
             >
-              {mostrarDescripcionCompleta ? "Ver menos" : "..."}
-            </button>
-          )}
-        </div>
+              {descripcion}
+              <Tooltip.Arrow className={styles.tooltipArrow} />
+            </Tooltip.Content>
+          </Tooltip.Root>
+        ) : (
+          <p className={styles.description} id={descripcionId}>
+            {descripcion}
+          </p>
+        )}
       </div>
       {/* Info principal */}
       <div className={styles.infoGrid}>
