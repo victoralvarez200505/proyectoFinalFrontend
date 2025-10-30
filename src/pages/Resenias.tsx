@@ -73,7 +73,8 @@ const formatoFecha = (valor: string | null | undefined): string => {
   return `${dia}/${mes}/${año}`;
 };
 
-const normalizarBusqueda = (valor: string) => valor.trim().toLowerCase();
+const normalizarBusqueda = (valor: string) =>
+  (valor ?? "").trim().toLowerCase();
 
 const Resenias = () => {
   const { id } = useParams<{ id: string }>();
@@ -193,7 +194,7 @@ const Resenias = () => {
     ? `/genero/${encodeURIComponent(juegoActual.genero)}`
     : "/";
 
-  const hayBusquedaActiva = terminoBusqueda.trim() !== "";
+  const hayBusquedaActiva = (terminoBusqueda ?? "").trim() !== "";
 
   const reseniasOrdenadas = useMemo(() => {
     if (resenias.length === 0) {
@@ -231,10 +232,10 @@ const Resenias = () => {
           : "";
 
       return (
-        comentario.includes(termino) ||
-        dificultad.includes(termino) ||
-        recomendacion.includes(termino) ||
-        horas.includes(termino)
+        (comentario ?? "").includes(termino) ||
+        (dificultad ?? "").includes(termino) ||
+        (recomendacion ?? "").includes(termino) ||
+        (horas ?? "").includes(termino)
       );
     });
   }, [hayBusquedaActiva, reseniasOrdenadas, terminoBusqueda]);
@@ -300,7 +301,7 @@ const Resenias = () => {
       return;
     }
 
-    const comentario = formData.contenido.trim();
+    const comentario = (formData.contenido ?? "").trim();
 
     if (comentario === "") {
       toast.error("Agrega algunos detalles sobre tu experiencia");
@@ -314,7 +315,7 @@ const Resenias = () => {
 
     let horasNormalizadas: number | null = null;
 
-    if (formData.horasJugadas.trim() !== "") {
+    if ((formData.horasJugadas ?? "").trim() !== "") {
       const numero = Number(formData.horasJugadas);
 
       if (Number.isNaN(numero) || numero < 0) {

@@ -13,8 +13,8 @@ import { GENEROS } from "@/lib/generos";
 import { bibliotecaConfig } from "@/config";
 import { cn } from "@/lib/utils";
 
-const normalizar = (valor: string) =>
-  valor
+const normalizar = (valor: string | undefined | null) =>
+  (valor ?? "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
@@ -24,7 +24,7 @@ const normalizar = (valor: string) =>
 
 const capitalizar = (valor: string) => {
   if (!valor) return "";
-  const texto = valor.replace(/[-_]+/g, " ").trim();
+  const texto = (valor ?? "").replace(/[-_]+/g, " ").trim();
   return texto.charAt(0).toUpperCase() + texto.slice(1);
 };
 
@@ -85,18 +85,18 @@ const Genero = () => {
     );
   }, [juegos, slugNormalizado]);
 
-  const hayBusquedaActiva = terminoBusqueda.trim() !== "";
+  const hayBusquedaActiva = (terminoBusqueda ?? "").trim() !== "";
 
   const juegosFiltrados = useMemo(() => {
     if (!hayBusquedaActiva) {
       return juegosPorGenero;
     }
 
-    const termino = terminoBusqueda.trim().toLowerCase();
+    const termino = (terminoBusqueda ?? "").trim().toLowerCase();
 
     return juegosPorGenero.filter((juegoActual) => {
-      const nombre = juegoActual.nombre.toLowerCase();
-      const plataforma = juegoActual.plataforma.toLowerCase();
+      const nombre = (juegoActual.nombre ?? "").toLowerCase();
+      const plataforma = (juegoActual.plataforma ?? "").toLowerCase();
       const desarrollador = (juegoActual.desarrollador ?? "").toLowerCase();
       const tienda = (juegoActual.tienda ?? "").toLowerCase();
       const sinopsis = (juegoActual.sinopsis ?? "").toLowerCase();

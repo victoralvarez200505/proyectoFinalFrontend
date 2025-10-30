@@ -17,7 +17,7 @@ type CampoOrden = "fecha" | "nombre" | "año";
 
 const obtenerCamposBusqueda = (): string[] => {
   const configurados = bibliotecaConfig.camposBusqueda
-    .map((campo) => campo.toLowerCase().trim())
+    .map((campo) => (campo ?? "").toLowerCase().trim())
     .filter((campo) => campo.length > 0);
 
   if (configurados.length > 0) {
@@ -31,8 +31,11 @@ const obtenerOrdenPorDefecto = (): {
   campo: CampoOrden;
   direccion: DireccionOrden;
 } => {
-  const [campoCrudo = "fecha", direccionCruda = "desc"] =
-    bibliotecaConfig.ordenPredeterminado.toLowerCase().split("-");
+  const [campoCrudo = "fecha", direccionCruda = "desc"] = (
+    bibliotecaConfig.ordenPredeterminado ?? "fecha-desc"
+  )
+    .toLowerCase()
+    .split("-");
 
   let campo: CampoOrden = "fecha";
   if (campoCrudo === "nombre") {
@@ -53,11 +56,11 @@ const coincideConBusqueda = (
 ): boolean => {
   switch (campo) {
     case "nombre":
-      return juego.nombre.toLowerCase().includes(termino);
+      return (juego.nombre ?? "").toLowerCase().includes(termino);
     case "genero":
-      return juego.genero.toLowerCase().includes(termino);
+      return (juego.genero ?? "").toLowerCase().includes(termino);
     case "plataforma":
-      return juego.plataforma.toLowerCase().includes(termino);
+      return (juego.plataforma ?? "").toLowerCase().includes(termino);
     case "desarrollador":
       return (juego.desarrollador ?? "").toLowerCase().includes(termino);
     case "tienda":
@@ -67,12 +70,12 @@ const coincideConBusqueda = (
     case "año":
       return juego.año ? String(juego.año).includes(termino) : false;
     case "id":
-      return juego.id.toLowerCase().includes(termino);
+      return (juego.id ?? "").toLowerCase().includes(termino);
     default: {
       const registroGenerico = juego as unknown as Record<string, unknown>;
       const valor = registroGenerico[campo];
       if (typeof valor === "string") {
-        return valor.toLowerCase().includes(termino);
+        return (valor ?? "").toLowerCase().includes(termino);
       }
 
       if (typeof valor === "number") {

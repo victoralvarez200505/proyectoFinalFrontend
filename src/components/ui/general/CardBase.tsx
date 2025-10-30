@@ -33,7 +33,13 @@ export const CardBase: React.FC<CardBaseProps> = ({
   <div className={`${styles["card-base"]} ${className}`.trim()}>
     {image && (
       <div className={styles["card-base__media"]}>
-        <img src={image} alt={title} loading="lazy" decoding="async" />
+        <img
+          src={image}
+          alt={title}
+          loading="lazy"
+          decoding="async"
+          className={styles["card-base__image"]}
+        />
       </div>
     )}
     <div className={`${styles["card-base__body"]} ${bodyClassName}`.trim()}>

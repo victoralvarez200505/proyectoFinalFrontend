@@ -68,17 +68,40 @@ export const GameForm = ({
     }
   }, [editingGame, open]);
 
+  const [formError, setFormError] = useState<string | null>(null);
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    setFormError(null);
+
+    // Validar género
+    if (!GENEROS.includes(formData.genero)) {
+      setFormError("Debes seleccionar un género válido.");
+      return;
+    }
+
+    // Validar año
+    const anio = Number(formData.año);
+    const anioActual = new Date().getFullYear();
+    if (!Number.isInteger(anio) || anio < 1970 || anio > anioActual + 2) {
+      setFormError(`El año debe ser un número entre 1970 y ${anioActual + 2}`);
+      return;
+    }
+
     const payload = {
       ...formData,
+      año: anio,
       tienda: formData.tienda.trim(),
       desarrollador: formData.desarrollador.trim(),
       sinopsis: formData.sinopsis.trim(),
     };
 
-    onSave(editingGame ? { ...payload, id: editingGame.id } : payload);
-    onOpenChange(false);
+    try {
+      onSave(editingGame ? { ...payload, id: editingGame.id } : payload);
+      onOpenChange(false);
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : "Error desconocido");
+    }
   };
 
   return (
@@ -94,6 +117,14 @@ export const GameForm = ({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className={styles.form}>
+          {formError && (
+            <div
+              className={styles.formError}
+              style={{ color: "red", marginBottom: 8 }}
+            >
+              {formError}
+            </div>
+          )}
           <div className={styles.field}>
             <Label htmlFor="nombre">Nombre del juego</Label>
             <Input

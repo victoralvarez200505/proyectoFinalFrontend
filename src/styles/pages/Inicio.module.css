@@ -126,7 +126,11 @@
     ),
     radial-gradient(circle at 12% 18%, hsl(198 66% 38% / 0.35), transparent 50%),
     radial-gradient(circle at 86% 24%, hsl(345 72% 44% / 0.4), transparent 55%),
-    radial-gradient(circle at 50% 100%, hsl(278 52% 30% / 0.35), transparent 60%);
+    radial-gradient(
+      circle at 50% 100%,
+      hsl(278 52% 30% / 0.35),
+      transparent 60%
+    );
   opacity: 0.6;
   pointer-events: none;
 }
@@ -680,7 +684,7 @@
 /* Responsive grid for game cards */
 .rejillaTarjetas {
   display: grid;
-  gap: 1.5rem;
+  gap: 2.5rem;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   justify-items: center;
   list-style: none;

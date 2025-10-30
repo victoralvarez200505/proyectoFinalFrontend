@@ -211,10 +211,20 @@
   color: var(--color-texto);
 }
 
+/*
+  Unifica la rejilla de tarjetas con la página principal (Inicio)
+  Puedes ajustar el gap para probar diferentes separaciones entre tarjetas
+  Ejemplo: gap: 2.5rem; // 40px
+*/
 .rejilla {
   display: grid;
-  gap: 1.5rem;
+  gap: 2.5rem; /* Ajusta este valor para cambiar el espacio entre tarjetas */
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  justify-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 .elementoJuego {

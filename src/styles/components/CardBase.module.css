@@ -14,11 +14,26 @@
   transition: box-shadow 0.2s;
 }
 
-.card-base__media img {
+.card-base__media {
   width: 100%;
   aspect-ratio: 16/9;
-  object-fit: cover;
+  overflow: hidden;
+  position: relative;
+  background: #181a24;
+}
+
+.card-base__image {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16/9;
+  object-fit: contain;
   display: block;
+  transition: transform 0.35s ease;
+  filter: saturate(0.97);
+}
+
+.card-base:hover .card-base__image {
+  transform: scale(1.03);
 }
 
 .card-base__body {
