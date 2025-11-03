@@ -1,4 +1,4 @@
-// Importación de hooks, componentes y utilidades necesarios para la página de género
+// Importación de hooks de React, componentes de UI, utilidades y estilos para la página de género
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { AlertCircle, ArrowLeft, Loader2, Plus, Search } from "lucide-react";
@@ -14,6 +14,7 @@ import { bibliotecaConfig } from "@/config";
 import { cn } from "@/lib/utils";
 
 // Función para normalizar cadenas eliminando acentos y caracteres especiales
+// Útil para comparar y buscar géneros de forma insensible a mayúsculas/minúsculas y acentos
 const normalizar = (valor: string | undefined | null) =>
   (valor ?? "")
     .normalize("NFD")
@@ -24,15 +25,20 @@ const normalizar = (valor: string | undefined | null) =>
     .trim();
 
 // Función para capitalizar la primera letra de una cadena
+// Se usa para mostrar nombres de géneros de forma legible
 const capitalizar = (valor: string) => {
   if (!valor) return "";
   const texto = (valor ?? "").replace(/[-_]+/g, " ").trim();
   return texto.charAt(0).toUpperCase() + texto.slice(1);
 };
 
+// Componente principal de la página de género
+// Muestra los juegos filtrados por género, permite buscarlos y gestionarlos
 const Genero = () => {
+  // Obtiene el parámetro de la URL correspondiente al género
   const { genero: generoParam = "" } = useParams<{ genero: string }>();
   const navigate = useNavigate();
+  // Obtiene juegos y funciones de gestión desde el store global
   const {
     juegos,
     cargando,
@@ -42,21 +48,25 @@ const Genero = () => {
     eliminarJuego,
   } = useGameStore();
 
+  // Estado para el término de búsqueda, visibilidad del formulario y juego en edición
   const [terminoBusqueda, setTerminoBusqueda] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingGame, setEditingGame] = useState<Juego | null>(null);
 
+  // Efecto para limpiar estados cuando cambia el género
   useEffect(() => {
     setTerminoBusqueda("");
     setEditingGame(null);
     setIsFormOpen(false);
   }, [generoParam]);
 
+  // Normaliza el slug del género recibido por parámetro
   const slugNormalizado = useMemo(
     () => normalizar(decodeURIComponent(generoParam)),
     [generoParam]
   );
 
+  // Obtiene el nombre canónico del género a partir del slug
   const generoCanonico = useMemo(() => {
     if (!slugNormalizado) return "";
 

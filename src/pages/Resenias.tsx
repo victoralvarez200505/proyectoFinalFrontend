@@ -1,3 +1,4 @@
+// Importación de hooks, componentes y utilidades para la página de reseñas
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router";
 import { ArrowLeft, Loader2 } from "lucide-react";
@@ -32,6 +33,7 @@ import {
 } from "@/components/ui/general/dialog";
 import { cn } from "@/lib/utils";
 
+// Lista de dificultades posibles para una reseña
 const dificultades = [
   "Muy fácil",
   "Fácil",
@@ -40,14 +42,16 @@ const dificultades = [
   "Muy difícil",
 ] as const;
 
+// Estado del formulario de reseña
 type FormState = {
-  calificacion: number | null;
-  contenido: string;
-  horasJugadas: string;
-  dificultad: string;
-  recomendaria: boolean;
+  calificacion: number | null; // Puntuación del juego
+  contenido: string; // Texto de la reseña
+  horasJugadas: string; // Horas jugadas
+  dificultad: string; // Dificultad seleccionada
+  recomendaria: boolean; // Si recomendaría el juego
 };
 
+// Crea el estado inicial del formulario de reseña
 const crearEstadoInicial = (): FormState => ({
   calificacion: 3,
   contenido: "",
@@ -56,6 +60,7 @@ const crearEstadoInicial = (): FormState => ({
   recomendaria: true,
 });
 
+// Formatea una fecha a string legible
 const formatoFecha = (valor: string | null | undefined): string => {
   if (!valor) {
     return "—";
