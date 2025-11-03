@@ -57,13 +57,21 @@ export const GameCard = ({
     <div className={styles.card}>
       {/* Imagen */}
       <div className={styles.cardImage}>
+        {/*
+          SUGERENCIA: Usa imágenes optimizadas y miniaturas pequeñas para las cards.
+          Si usas un backend propio, genera versiones pequeñas (ej: 200x200px, calidad 60-80).
+        */}
         <img
           src={
             juego.imagen ||
-            "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800"
+            "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=200&q=60"
           }
           alt={juego.nombre}
           className={styles.image}
+          loading="lazy"
+          width={200}
+          height={200}
+          style={{ objectFit: "cover" }}
         />
       </div>
       {/* Fila DEV y Género */}
