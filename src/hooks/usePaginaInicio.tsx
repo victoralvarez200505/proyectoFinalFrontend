@@ -1,3 +1,5 @@
+
+// Hook personalizado para gestionar la lógica de la página de inicio y filtrado de juegos
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { useGameStore } from "@/hooks/useGameStore.ts";
@@ -6,27 +8,33 @@ import type { Juego } from "@/types/juego";
 import { bibliotecaConfig, uiConfig } from "@/config";
 import { reemplazarVariables } from "@/lib/utils";
 
+
+// Permite crear o editar juegos sin requerir el id
 interface JuegoConOpcionalId extends Omit<Juego, "id"> {
   id?: string;
 }
 
+
+// Campos de búsqueda por defecto si no hay configuración
 const CAMPOS_FALLBACK = ["nombre", "genero", "plataforma"] as const;
 
+
+// Tipos para el ordenamiento de la lista
 type DireccionOrden = "asc" | "desc";
 type CampoOrden = "fecha" | "nombre" | "año";
 
+// Devuelve los campos configurados para búsqueda o los de fallback
 const obtenerCamposBusqueda = (): string[] => {
   const configurados = bibliotecaConfig.camposBusqueda
     .map((campo) => (campo ?? "").toLowerCase().trim())
     .filter((campo) => campo.length > 0);
-
   if (configurados.length > 0) {
     return configurados;
   }
-
   return [...CAMPOS_FALLBACK];
 };
 
+// Devuelve el campo y dirección de ordenamiento por defecto según configuración
 const obtenerOrdenPorDefecto = (): {
   campo: CampoOrden;
   direccion: DireccionOrden;
@@ -36,19 +44,17 @@ const obtenerOrdenPorDefecto = (): {
   )
     .toLowerCase()
     .split("-");
-
   let campo: CampoOrden = "fecha";
   if (campoCrudo === "nombre") {
     campo = "nombre";
   } else if (campoCrudo === "año" || campoCrudo === "ano") {
     campo = "año";
   }
-
   const direccion: DireccionOrden = direccionCruda === "asc" ? "asc" : "desc";
-
   return { campo, direccion };
 };
 
+// Determina si un juego coincide con el término de búsqueda en un campo dado
 const coincideConBusqueda = (
   juego: Juego,
   campo: string,
@@ -77,29 +83,29 @@ const coincideConBusqueda = (
       if (typeof valor === "string") {
         return (valor ?? "").toLowerCase().includes(termino);
       }
-
       if (typeof valor === "number") {
         return String(valor).includes(termino);
       }
-
       return false;
     }
   }
 };
 
+// Determina si un juego está pendiente
 const estaPendiente = (juego: Juego): boolean => {
   if (typeof juego.pendiente === "boolean") {
     return juego.pendiente;
   }
-
   if (typeof juego.completado === "boolean") {
     return !juego.completado;
   }
-
   return true;
 };
 
+
+// Hook principal para manejar la lógica de la página de inicio, filtrado, paginación y acciones sobre juegos
 export const usePaginaInicio = () => {
+  // Estado y acciones de juegos desde el store principal
   const {
     juegos,
     cargando,
@@ -109,12 +115,14 @@ export const usePaginaInicio = () => {
     eliminarJuego,
   } = useGameStore();
 
+  // Navegación y estados locales
   const navigate = useNavigate();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingGame, setEditingGame] = useState<Juego | null>(null);
   const [terminoBusqueda, setTerminoBusqueda] = useState("");
   const [paginaActual, setPaginaActual] = useState(1);
 
+  // Configuración de campos de búsqueda y ordenamiento
   const camposBusqueda = useMemo(obtenerCamposBusqueda, []);
   const ordenPorDefecto = useMemo(obtenerOrdenPorDefecto, []);
   const juegosPorPagina = useMemo(
@@ -122,31 +130,26 @@ export const usePaginaInicio = () => {
     []
   );
 
+  // Aplica filtros y ordenamiento a la lista de juegos
   const juegosConfigurados = useMemo(() => {
     const base = bibliotecaConfig.mostrarSoloCompletados
       ? juegos.filter((juego) => Boolean(juego.completado))
       : juegos;
-
     const coleccionOrdenada = [...base];
-
     coleccionOrdenada.sort((a, b) => {
       const factor = ordenPorDefecto.direccion === "asc" ? 1 : -1;
-
       if (ordenPorDefecto.campo === "nombre") {
         return a.nombre.localeCompare(b.nombre) * factor;
       }
-
       if (ordenPorDefecto.campo === "año") {
         const valorA = Number.isFinite(a.año) ? a.año : 0;
         const valorB = Number.isFinite(b.año) ? b.año : 0;
         return (valorA - valorB) * factor;
       }
-
       const fechaA = a.fechaCreacion ? new Date(a.fechaCreacion).getTime() : 0;
       const fechaB = b.fechaCreacion ? new Date(b.fechaCreacion).getTime() : 0;
       return (fechaA - fechaB) * factor;
     });
-
     return coleccionOrdenada;
   }, [juegos, ordenPorDefecto]);
 
