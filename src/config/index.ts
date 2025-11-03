@@ -111,6 +111,7 @@ interface AppSettings {
     carrusel?: {
       titulo?: string;
       subtitulo?: string;
+      maxJuegos?: number;
     };
     tema?: {
       variant?: string;
@@ -175,6 +176,7 @@ interface ParsedAppSettings {
     carrusel: {
       titulo: string;
       subtitulo: string;
+      maxJuegos: number;
     };
     tema: {
       variant: string;
@@ -347,6 +349,7 @@ const parseSettings = (settings: unknown): ParsedAppSettings => {
       carrusel: {
         titulo: "",
         subtitulo: "",
+        maxJuegos: 8,
       },
       tema: {
         variant: "retro",
@@ -521,6 +524,10 @@ const parseSettings = (settings: unknown): ParsedAppSettings => {
       subtitulo: toString(
         data.ui?.carrusel?.subtitulo,
         fallback.ui.carrusel.subtitulo
+      ),
+      maxJuegos: toNumber(
+        data.ui?.carrusel?.maxJuegos,
+        fallback.ui.carrusel.maxJuegos
       ),
     },
     tema,

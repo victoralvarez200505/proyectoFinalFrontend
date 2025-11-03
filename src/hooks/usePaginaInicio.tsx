@@ -1,4 +1,3 @@
-
 // Hook personalizado para gestionar la lógica de la página de inicio y filtrado de juegos
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
@@ -8,16 +7,13 @@ import type { Juego } from "@/types/juego";
 import { bibliotecaConfig, uiConfig } from "@/config";
 import { reemplazarVariables } from "@/lib/utils";
 
-
 // Permite crear o editar juegos sin requerir el id
 interface JuegoConOpcionalId extends Omit<Juego, "id"> {
   id?: string;
 }
 
-
 // Campos de búsqueda por defecto si no hay configuración
 const CAMPOS_FALLBACK = ["nombre", "genero", "plataforma"] as const;
-
 
 // Tipos para el ordenamiento de la lista
 type DireccionOrden = "asc" | "desc";
@@ -101,7 +97,6 @@ const estaPendiente = (juego: Juego): boolean => {
   }
   return true;
 };
-
 
 // Hook principal para manejar la lógica de la página de inicio, filtrado, paginación y acciones sobre juegos
 export const usePaginaInicio = () => {

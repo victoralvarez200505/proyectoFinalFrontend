@@ -1,4 +1,3 @@
-
 // Hook personalizado para gestionar la lógica de la biblioteca de juegos
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Juego } from "@/types/juego";
@@ -6,7 +5,6 @@ import { toast } from "sonner";
 import * as api from "@/services/api";
 import { bibliotecaConfig, uiConfig } from "@/config";
 import { reemplazarVariables } from "@/lib/utils";
-
 
 // Tipos de notificaciones soportadas
 type TipoToast = "success" | "error" | "warning";
@@ -75,7 +73,6 @@ const contarPendientes = (coleccion: Juego[]): number => {
   return coleccion.filter((item) => esPendiente(item)).length;
 };
 
-
 // Hook principal para manejar la lógica de la biblioteca de juegos
 export const useGameStore = () => {
   // Determina si se deben usar juegos predeterminados del archivo de configuración
@@ -131,7 +128,6 @@ export const useGameStore = () => {
     void cargarJuegos();
   }, [cargarJuegos]);
 
-
   // Agrega un nuevo juego, validando los límites de favoritos y pendientes
   const agregarJuego = async (datosJuego: Omit<Juego, "id">) => {
     if (limiteFavoritos > 0 && esFavorito(datosJuego)) {
@@ -161,7 +157,6 @@ export const useGameStore = () => {
       throw err;
     }
   };
-
 
   // Actualiza un juego existente, validando límites antes de aplicar cambios
   const actualizarJuego = async (datosJuego: Juego) => {
@@ -218,7 +213,6 @@ export const useGameStore = () => {
     }
   };
 
-
   // Elimina un juego por id y actualiza el estado
   const eliminarJuego = async (id: string) => {
     try {
@@ -232,7 +226,6 @@ export const useGameStore = () => {
       throw err;
     }
   };
-
 
   // Exposición de estado y acciones del hook
   return {

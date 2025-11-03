@@ -3,6 +3,7 @@ import type { FocusEvent, KeyboardEvent } from "react";
 import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import styles from "@/styles/components/GameCarousel.module.css";
 import type { Juego } from "@/types/juego";
+import { uiConfig } from "@/config";
 
 interface GameCarouselProps {
   games: Juego[];
@@ -23,15 +24,23 @@ export const GameCarousel = ({
   const [isFocused, setIsFocused] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
+  // Limitar la cantidad de juegos mostrados en el carrusel según configuración
+  const maxJuegos = uiConfig.carrusel?.maxJuegos ?? 8;
   const hasGames = games.length > 0;
 
   const orderedGames = useMemo(() => {
-    return [...games].sort((a, b) => {
-      const fechaA = a.fechaCreacion ? new Date(a.fechaCreacion).getTime() : 0;
-      const fechaB = b.fechaCreacion ? new Date(b.fechaCreacion).getTime() : 0;
-      return fechaB - fechaA;
-    });
-  }, [games]);
+    return [...games]
+      .sort((a, b) => {
+        const fechaA = a.fechaCreacion
+          ? new Date(a.fechaCreacion).getTime()
+          : 0;
+        const fechaB = b.fechaCreacion
+          ? new Date(b.fechaCreacion).getTime()
+          : 0;
+        return fechaB - fechaA;
+      })
+      .slice(0, maxJuegos);
+  }, [games, maxJuegos]);
 
   const scrollToIndex = useCallback(
     (index: number, behavior: ScrollBehavior = "smooth") => {
