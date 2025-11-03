@@ -382,19 +382,6 @@
   color: var(--color-primario);
 }
 
-.portadaAvisoOffline {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-  padding: 0.75rem 1.25rem;
-  border-radius: var(--radio-base);
-  border: var(--ancho-borde-pixel) solid hsl(45 92% 62% / 0.4);
-  background: linear-gradient(135deg, hsl(45 92% 62% / 0.15), transparent);
-  color: var(--color-texto);
-  font-size: 0.9rem;
-  box-shadow: 3px 3px 0 hsl(240 58% 8% / 0.4);
-}
-
 .portadaAvisoLimite {
   display: flex;
   align-items: flex-start;

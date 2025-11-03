@@ -14,8 +14,7 @@ const RootLayout = () => {
       return;
     }
 
-    const { analyticsId, discordUrl, soporteUrl, featureFlags } =
-      integracionesConfig;
+    const { analyticsId, discordUrl, soporteUrl } = integracionesConfig;
 
     const body = document.body;
 
@@ -36,10 +35,6 @@ const RootLayout = () => {
     } else {
       delete body.dataset.soporteUrl;
     }
-
-    body.dataset.modoOffline = featureFlags.habilitarModoOffline
-      ? "true"
-      : "false";
   }, []);
 
   return (

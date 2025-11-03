@@ -49,6 +49,18 @@ const DEFAULT_THEME_PRESETS: ThemePresets = {
       boton: "linear-gradient(135deg, #FFFFFF, #FFD400)",
     },
   },
+  reto: {
+    paletaColores: {
+      primario: "#00C853", // Verde intenso
+      secundario: "#FFD600", // Amarillo vibrante
+      fondo: "#212121", // Gris oscuro
+      texto: "#FAFAFA", // Blanco casi puro
+    },
+    gradientes: {
+      portada: "linear-gradient(135deg, #00C853 0%, #FFD600 100%)",
+      boton: "linear-gradient(135deg, #FFD600 0%, #00C853 100%)",
+    },
+  },
 };
 
 interface AppSettings {
@@ -57,7 +69,7 @@ interface AppSettings {
     baseUrl?: string;
     timeoutMs?: number;
     reintentos?: number;
-    usarMock?: boolean;
+
     reseniasEndpoint?: string;
     defaultHeaders?: StringRecord;
     authToken?: string;
@@ -91,7 +103,7 @@ interface AppSettings {
       sinJuegos?: string;
       sinResultados?: string;
       cargandoBiblioteca?: string;
-      modoOffline?: string;
+
       limiteFavoritos?: string;
       limitePendientes?: string;
       errorConexion?: string;
@@ -121,7 +133,7 @@ interface ParsedAppSettings {
     baseUrl: string;
     timeoutMs: number;
     reintentos: number;
-    usarMock: boolean;
+
     reseniasEndpoint: string;
     defaultHeaders: StringRecord;
     authToken: string;
@@ -155,7 +167,7 @@ interface ParsedAppSettings {
       sinJuegos: string;
       sinResultados: string;
       cargandoBiblioteca: string;
-      modoOffline: string;
+
       limiteFavoritos: string;
       limitePendientes: string;
       errorConexion: string;
@@ -293,7 +305,7 @@ const parseSettings = (settings: unknown): ParsedAppSettings => {
       baseUrl: "http://localhost:3000/api",
       timeoutMs: 10000,
       reintentos: 0,
-      usarMock: false,
+
       reseniasEndpoint: "/resenias",
       defaultHeaders: {},
       authToken: "",
@@ -327,7 +339,7 @@ const parseSettings = (settings: unknown): ParsedAppSettings => {
         sinJuegos: "",
         sinResultados: "",
         cargandoBiblioteca: "Cargando...",
-        modoOffline: "Modo offline activo.",
+
         limiteFavoritos: "",
         limitePendientes: "",
         errorConexion: "",
@@ -362,7 +374,7 @@ const parseSettings = (settings: unknown): ParsedAppSettings => {
     baseUrl: toString(data.api?.baseUrl, fallback.api.baseUrl),
     timeoutMs: toNumber(data.api?.timeoutMs, fallback.api.timeoutMs),
     reintentos: toNumber(data.api?.reintentos, fallback.api.reintentos),
-    usarMock: Boolean(data.api?.usarMock),
+
     reseniasEndpoint: toString(
       data.api?.reseniasEndpoint,
       fallback.api.reseniasEndpoint
@@ -487,10 +499,7 @@ const parseSettings = (settings: unknown): ParsedAppSettings => {
         data.ui?.mensajes?.cargandoBiblioteca,
         fallback.ui.mensajes.cargandoBiblioteca
       ),
-      modoOffline: toString(
-        data.ui?.mensajes?.modoOffline,
-        fallback.ui.mensajes.modoOffline
-      ),
+
       limiteFavoritos: toString(
         data.ui?.mensajes?.limiteFavoritos,
         fallback.ui.mensajes.limiteFavoritos
@@ -544,5 +553,4 @@ export const apiConfig = appSettings.api;
 export const bibliotecaConfig = appSettings.biblioteca;
 export const generosConfig = appSettings.biblioteca.generos;
 export const uiConfig = appSettings.ui;
-export const temaConfig = appSettings.ui.tema;
 export const integracionesConfig = appSettings.integraciones;

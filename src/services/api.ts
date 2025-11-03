@@ -1,5 +1,5 @@
 import type { Juego } from "@/types/juego";
-import { apiConfig, bibliotecaConfig, integracionesConfig } from "@/config";
+import { apiConfig } from "@/config";
 
 const construirUrlApiPorDefecto = (): string => {
   if (typeof window === "undefined") {
@@ -48,11 +48,6 @@ const RESENIAS_ENDPOINT = (() => {
   const base = apiConfig.reseniasEndpoint || "/resenias";
   return base.startsWith("/") ? base : `/${base}`;
 })();
-
-const shouldUseMock =
-  apiConfig.usarMock || integracionesConfig.featureFlags.habilitarModoOffline;
-
-let mockJuegos: Juego[] = [...bibliotecaConfig.juegos];
 
 const toHeaders = (value: HeadersInit | undefined): Headers => {
   if (!value) {
@@ -130,14 +125,6 @@ const ejecutarFetch = async (
   }
 
   throw ultimoError instanceof Error ? ultimoError : new Error(fallback);
-};
-
-const generarId = () => {
-  if (typeof crypto !== "undefined" && crypto.randomUUID) {
-    return crypto.randomUUID();
-  }
-
-  return `mock-${Date.now()}-${Math.floor(Math.random() * 10_000)}`;
 };
 
 type JsonObject = Record<string, unknown>;
@@ -261,17 +248,12 @@ const normalizarListadoResenias = (payload: unknown): Resenia[] => {
   return [];
 };
 
-const obtenerMockJuegos = () => mockJuegos.map((juego) => ({ ...juego }));
-
 const normalizarEndpoint = (endpoint: string) =>
   endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
 
 // Juegos
-export const getJuegos = async (): Promise<Juego[]> => {
-  if (shouldUseMock) {
-    return obtenerMockJuegos();
-  }
 
+export const getJuegos = async (): Promise<Juego[]> => {
   const response = await ejecutarFetch(
     "/juegos",
     { method: "GET" },
@@ -281,14 +263,6 @@ export const getJuegos = async (): Promise<Juego[]> => {
 };
 
 export const getJuego = async (id: string): Promise<Juego> => {
-  if (shouldUseMock) {
-    const juego = mockJuegos.find((item) => item.id === id);
-    if (!juego) {
-      throw new Error("Juego no encontrado en modo offline");
-    }
-    return { ...juego };
-  }
-
   const response = await ejecutarFetch(
     `/juegos/${id}`,
     { method: "GET" },
@@ -298,12 +272,6 @@ export const getJuego = async (id: string): Promise<Juego> => {
 };
 
 export const createJuego = async (juego: Omit<Juego, "id">): Promise<Juego> => {
-  if (shouldUseMock) {
-    const nuevoJuego: Juego = { id: generarId(), ...juego };
-    mockJuegos = [...mockJuegos, nuevoJuego];
-    return { ...nuevoJuego };
-  }
-
   const response = await ejecutarFetch(
     "/juegos",
     {
@@ -322,24 +290,6 @@ export const updateJuego = async (
   id: string,
   juego: Partial<Juego>
 ): Promise<Juego> => {
-  if (shouldUseMock) {
-    let juegoActualizado: Juego | undefined;
-
-    mockJuegos = mockJuegos.map((item) => {
-      if (item.id !== id) {
-        return item;
-      }
-      juegoActualizado = { ...item, ...juego } as Juego;
-      return juegoActualizado;
-    });
-
-    if (!juegoActualizado) {
-      throw new Error("Juego no encontrado en modo offline");
-    }
-
-    return { ...juegoActualizado };
-  }
-
   const response = await ejecutarFetch(
     `/juegos/${id}`,
     {
@@ -355,17 +305,6 @@ export const updateJuego = async (
 };
 
 export const deleteJuego = async (id: string): Promise<void> => {
-  if (shouldUseMock) {
-    const cantidadInicial = mockJuegos.length;
-    mockJuegos = mockJuegos.filter((juego) => juego.id !== id);
-
-    if (mockJuegos.length === cantidadInicial) {
-      throw new Error("Juego no encontrado en modo offline");
-    }
-
-    return;
-  }
-
   const response = await ejecutarFetch(
     `/juegos/${id}`,
     { method: "DELETE" },
@@ -375,11 +314,8 @@ export const deleteJuego = async (id: string): Promise<void> => {
 };
 
 // Reseñas
-export const getResenias = async (): Promise<Resenia[]> => {
-  if (shouldUseMock) {
-    return [];
-  }
 
+export const getResenias = async (): Promise<Resenia[]> => {
   const response = await ejecutarFetch(
     RESENIAS_ENDPOINT,
     { method: "GET" },
@@ -395,10 +331,6 @@ export const getResenias = async (): Promise<Resenia[]> => {
 export const getReseniasPorJuego = async (
   juegoId: string
 ): Promise<Resenia[]> => {
-  if (shouldUseMock) {
-    return [];
-  }
-
   const response = await ejecutarFetch(
     `${normalizarEndpoint(RESENIAS_ENDPOINT)}/juego/${juegoId}`,
     { method: "GET" },
@@ -414,12 +346,6 @@ export const getReseniasPorJuego = async (
 export const createResenia = async (
   resenia: ReseniaPayload
 ): Promise<Resenia> => {
-  if (shouldUseMock) {
-    throw new Error(
-      "La creación de reseñas no está disponible en modo offline"
-    );
-  }
-
   const response = await ejecutarFetch(
     RESENIAS_ENDPOINT,
     {
@@ -438,12 +364,6 @@ export const updateResenia = async (
   id: string,
   resenia: Partial<ReseniaPayload>
 ): Promise<Resenia> => {
-  if (shouldUseMock) {
-    throw new Error(
-      "La actualización de reseñas no está disponible en modo offline"
-    );
-  }
-
   const response = await ejecutarFetch(
     `${normalizarEndpoint(RESENIAS_ENDPOINT)}/${id}`,
     {
@@ -459,12 +379,6 @@ export const updateResenia = async (
 };
 
 export const deleteResenia = async (id: string): Promise<void> => {
-  if (shouldUseMock) {
-    throw new Error(
-      "La eliminación de reseñas no está disponible en modo offline"
-    );
-  }
-
   const response = await ejecutarFetch(
     `${normalizarEndpoint(RESENIAS_ENDPOINT)}/${id}`,
     { method: "DELETE" },

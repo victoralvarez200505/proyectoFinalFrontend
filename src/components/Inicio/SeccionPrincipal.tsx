@@ -3,7 +3,6 @@ import {
   Plus,
   Loader2,
   AlertCircle,
-  WifiOff,
   Star,
   Clock,
 } from "lucide-react";
@@ -27,15 +26,10 @@ interface SeccionPrincipalProps {
   isLoading: boolean;
   error: string | null;
   juegos: Juego[];
-  // terminoBusqueda: string;
-  // placeholderBusqueda: string;
   textoSinResultados: string;
   hayBusquedaActiva: boolean;
-  modoOffline: boolean;
   onAddJuego: () => void;
   onSelectJuego?: (juego: Juego) => void;
-  // onSearchChange: (valor: string) => void;
-  // onClearBusqueda: () => void;
   limiteFavoritosAlcanzado: boolean;
   limitePendientesAlcanzado: boolean;
   mensajeLimiteFavoritos: string;
@@ -54,7 +48,6 @@ export const SeccionPrincipal = ({
   // placeholderBusqueda,
   textoSinResultados,
   hayBusquedaActiva,
-  modoOffline,
   onAddJuego,
   onSelectJuego,
   // onSearchChange,
@@ -88,10 +81,6 @@ export const SeccionPrincipal = ({
     mensajes.sinResultados.trim() !== ""
       ? mensajes.sinResultados
       : "No hay coincidencias";
-  const mensajeModoOffline =
-    mensajes.modoOffline.trim() !== ""
-      ? mensajes.modoOffline
-      : "Modo offline activo. Los cambios no se sincronizarán.";
   const textoLimiteFavoritos = mensajeLimiteFavoritos;
   const textoLimitePendientes = mensajeLimitePendientes;
   const etiquetaAccionPrincipal =
@@ -156,13 +145,6 @@ export const SeccionPrincipal = ({
             {etiquetaAccionPrincipal}
           </Button>
         </div>
-
-        {modoOffline ? (
-          <div className={styles.portadaAvisoOffline}>
-            <WifiOff size={18} />
-            <span>{mensajeModoOffline}</span>
-          </div>
-        ) : null}
 
         <div className={styles.portadaMensajes}>
           {error ? (

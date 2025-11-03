@@ -1,7 +1,7 @@
+// Importación de hooks, componentes y utilidades necesarios para la página de género
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { AlertCircle, ArrowLeft, Loader2, Plus, Search } from "lucide-react";
-
 import styles from "@/styles/pages/Genero.module.css";
 import { useGameStore } from "@/hooks/useGameStore";
 import type { Juego } from "@/types/juego";
@@ -13,6 +13,7 @@ import { GENEROS } from "@/lib/generos";
 import { bibliotecaConfig } from "@/config";
 import { cn } from "@/lib/utils";
 
+// Función para normalizar cadenas eliminando acentos y caracteres especiales
 const normalizar = (valor: string | undefined | null) =>
   (valor ?? "")
     .normalize("NFD")
@@ -22,6 +23,7 @@ const normalizar = (valor: string | undefined | null) =>
     .replace(/\s+/g, " ")
     .trim();
 
+// Función para capitalizar la primera letra de una cadena
 const capitalizar = (valor: string) => {
   if (!valor) return "";
   const texto = (valor ?? "").replace(/[-_]+/g, " ").trim();
@@ -157,9 +159,11 @@ const Genero = () => {
 
   return (
     <div className={styles.pagina}>
+      {/* Encabezado con título, búsqueda y acciones */}
       <header className={styles.encabezado}>
         <div className={styles.encabezadoContenido}>
           <div className={styles.encabezadoPrincipal}>
+            {/* Botón para volver a la página principal */}
             <Link to="/">
               <Button
                 variant="outline"
@@ -170,6 +174,7 @@ const Genero = () => {
               </Button>
             </Link>
             <div className={styles.grupoTitulo}>
+              {/* Título del género y subtítulo con cantidad de juegos */}
               <h1 className={styles.titulo}>{generoCanonico || "Género"}</h1>
               <p className={styles.subtitulo}>
                 {hayBusquedaActiva
@@ -182,7 +187,7 @@ const Genero = () => {
               </p>
             </div>
           </div>
-
+          {/* Grupo de acciones: búsqueda y agregar juego */}
           <div className={styles.acciones}>
             <div className={styles.grupoBusqueda}>
               <div className={styles.campoBusqueda}>
@@ -198,6 +203,7 @@ const Genero = () => {
                   className={styles.entradaBusqueda}
                   aria-label="Buscar dentro de este género"
                 />
+                {/* Botón para limpiar la búsqueda */}
                 {hayBusquedaActiva ? (
                   <button
                     type="button"
@@ -209,7 +215,7 @@ const Genero = () => {
                 ) : null}
               </div>
             </div>
-
+            {/* Botón para agregar un nuevo juego */}
             <Button
               onClick={handleAgregarJuego}
               className={styles.botonPrincipal}
@@ -224,9 +230,9 @@ const Genero = () => {
           </div>
         </div>
       </header>
-
       <main className={styles.contenido}>
         {cargando ? (
+          // Estado de carga
           <div className={styles.estado}>
             <div className={styles.estadoInterior}>
               <Loader2 className={styles.iconoCarga} aria-hidden="true" />
@@ -234,6 +240,7 @@ const Genero = () => {
             </div>
           </div>
         ) : error ? (
+          // Estado de error
           <div className={styles.estado}>
             <div className={cn(styles.panelMensaje, styles.panelError)}>
               <AlertCircle size={20} aria-hidden="true" />
@@ -244,6 +251,7 @@ const Genero = () => {
             </div>
           </div>
         ) : mostrarEstadoSinGenero ? (
+          // Estado vacío para el género
           <div className={styles.estado}>
             <div className={cn(styles.panelMensaje, styles.panelVacio)}>
               <h2>No hay juegos de este género</h2>
@@ -262,6 +270,7 @@ const Genero = () => {
             </div>
           </div>
         ) : juegosFiltrados.length === 0 ? (
+          // Estado de búsqueda sin resultados
           <div className={styles.estado}>
             <div className={cn(styles.panelMensaje, styles.panelBusqueda)}>
               <AlertCircle size={20} aria-hidden="true" />
@@ -280,6 +289,7 @@ const Genero = () => {
             </div>
           </div>
         ) : (
+          // Lista de juegos filtrados
           <ul className={styles.rejilla}>
             {juegosFiltrados.map((juegoActual) => (
               <li key={juegoActual.id} className={styles.elementoJuego}>
@@ -295,6 +305,7 @@ const Genero = () => {
         )}
       </main>
 
+      {/* Formulario para agregar o editar juegos */}
       <GameForm
         open={isFormOpen}
         onOpenChange={setIsFormOpen}
@@ -305,4 +316,5 @@ const Genero = () => {
   );
 };
 
+// Exporta el componente de la página de género
 export default Genero;
